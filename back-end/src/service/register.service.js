@@ -5,14 +5,15 @@ const createUser = async ({ name, email, password, role }) => {
   const emailExists = await User.findOne({ where: { email } });
   const nameExists = await User.findOne({ where: { name } });
   const cryptoPassword = md5(password);
+  let type = role;
+
+  if (!role) {
+    type = 'customer';
+  }
 
   if (emailExists || nameExists) return ({ status: 409, message: 'User already registered' });
 
-  if(!role) {
-    role = 'customer';
-  }
-
-  const user = await User.create({ name, email, password: cryptoPassword, role });
+  const user = await User.create({ name, email, password: cryptoPassword, role: type });
   return user;
 };
 
