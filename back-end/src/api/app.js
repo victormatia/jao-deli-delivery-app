@@ -2,7 +2,6 @@ const express = require('express');
 const routeUser = require('../routes/register.route');
 const routeProduct = require('../routes/product.route');
 const routeLogin = require('../routes/login.route');
-const path = require('path')
 
 const app = express();
 app.use(express.json());
