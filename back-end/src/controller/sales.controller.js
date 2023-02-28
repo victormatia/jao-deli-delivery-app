@@ -3,7 +3,7 @@ const SalesService = require('../service/sales.service');
 const SalesController = {
   create: async (req, res) => {
     const { body, user: { id } } = req;
-    const newSale = { ...body, userId: id, status: 'Pendente', sale_date: new Date() };
+    const newSale = { ...body, userId: id, status: 'Pendente', saleDate: new Date() };
     const sale = await SalesService.create(newSale);
     res.status(201).json(sale);
   },
