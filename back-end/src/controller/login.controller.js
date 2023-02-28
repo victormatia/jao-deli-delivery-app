@@ -6,5 +6,6 @@ const loginController = {
       const validatedUser = await loginService.login(email, password);
       return res.status(200).json(validatedUser);
   },
-}
+};
+
 module.exports = loginController;

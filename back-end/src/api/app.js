@@ -1,6 +1,6 @@
 const express = require('express');
 const routeUser = require('../routes/register.route');
-const routeLogin = require('../routes/login.route')
+const routeLogin = require('../routes/login.route');
 
 const app = express();
 app.use(express.json());
