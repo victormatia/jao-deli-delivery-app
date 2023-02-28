@@ -1,9 +1,11 @@
 const express = require('express');
 const routeUser = require('../routes/register.route');
 const routeProduct = require('../routes/product.route');
+const routeLogin = require('../routes/login.route');
 
 const app = express();
 app.use(express.json());
+app.use('/login', routeLogin);
 app.use('/register', routeUser);
 app.use('/customer/products', routeProduct);
 
