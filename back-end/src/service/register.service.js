@@ -8,6 +8,10 @@ const createUser = async ({ name, email, password, role }) => {
 
   if (emailExists || nameExists) return ({ status: 409, message: 'User already registered' });
 
+  if(!role) {
+    role = 'customer';
+  }
+
   const user = await User.create({ name, email, password: cryptoPassword, role });
   return user;
 };
