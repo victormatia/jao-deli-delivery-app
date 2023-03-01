@@ -4,8 +4,10 @@ const routeProduct = require('../routes/product.route');
 const routeLogin = require('../routes/login.route');
 const routeSales = require('../routes/sales.route');
 const routeSeller = require('../routes/seller.route');
+const cors = require('../middleware/cors');
 
 const app = express();
+app.use(cors);
 app.use(express.json());
 app.use('/login', routeLogin);
 app.use('/register', routeUser);
