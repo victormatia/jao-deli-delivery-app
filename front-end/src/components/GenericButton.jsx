@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { formContext } from '../context/FormProvider';
 
 function GenericButton({ title }) {
@@ -7,12 +8,22 @@ function GenericButton({ title }) {
     name, email, pass,
   }, setInputsValue } = useContext(formContext);
 
-  const onclick = () => {
-    setInputsValue({
-      name: { value: '', isValid: false },
-      email: { value: '', isValid: false },
-      pass: { value: '', isValid: false },
-    });
+  const onclick = async () => {
+    try {
+      const request = await axios.post('http://localhost:3001/register', {
+        name: name.value, email: email.value, password: pass.value,
+      });
+
+      console.log(request);
+
+      setInputsValue({
+        name: { value: '', isValid: false },
+        email: { value: '', isValid: false },
+        pass: { value: '', isValid: false },
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   return (
