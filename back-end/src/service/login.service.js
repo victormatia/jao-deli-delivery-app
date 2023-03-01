@@ -4,7 +4,7 @@ const { generateToken } = require('../utils/generate.token');
 
 const login = async (email, password) => {
   const userExist = await User.findOne({ where: { email } });
-  if (!userExist) return ({ status: 409, message: 'User already registered' });
+  if (!userExist) return ({ status: 404, message: 'User not found' });
   const { password: userPassword } = userExist;
   if (md5(password) !== userPassword) return ({ status: 401, message: 'Invalid password' });
   const token = generateToken(userExist);
