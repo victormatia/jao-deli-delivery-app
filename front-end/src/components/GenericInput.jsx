@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { formContext } from '../context/FormProvider';
 
-function GenericInput({ name, type, validation, keyAccess }) {
+function GenericInput({ name, type, validation, keyAccess, dataTestId }) {
   const { inputsValue, setInputsValue } = useContext(formContext);
 
   const showMessage = () => {
@@ -35,6 +35,7 @@ function GenericInput({ name, type, validation, keyAccess }) {
             validation(target.value, setInputsValue);
             onInputChange(target.value);
           } }
+          data-testid={ dataTestId }
         />
       </label>
       <span>{ showMessage() }</span>
