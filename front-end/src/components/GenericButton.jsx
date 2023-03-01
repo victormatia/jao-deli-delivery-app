@@ -1,12 +1,6 @@
-import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { formContext } from '../context/FormProvider';
 
-function GenericButton({ title }) {
-  const { inputsValue: {
-    name, email, pass,
-  }, setInputsValue } = useContext(formContext);
-
+function GenericButton({ title, isDisabled }) {
   const onclick = () => {
     setInputsValue({
       name: { value: '', isValid: false },
@@ -17,7 +11,7 @@ function GenericButton({ title }) {
 
   return (
     <button
-      disabled={ !(name.isValid && email.isValid && pass.isValid) }
+      disabled={ isDisabled }
       type="submit"
       onClick={ onclick }
     >
