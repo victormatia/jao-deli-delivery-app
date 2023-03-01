@@ -7,7 +7,7 @@ const validateNameInput = (name, setter) => {
 
 const validatePassInput = (pass, setter) => {
   const SEIS = 6;
-  const isValid = pass.length > SEIS;
+  const isValid = pass.length >= SEIS;
   setter((prevState) => (
     { ...prevState, pass: { ...prevState.pass, isValid } }));
 };

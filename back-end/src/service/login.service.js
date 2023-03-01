@@ -2,7 +2,7 @@ const md5 = require('md5');
 const { User } = require('../database/models');
 const { generateToken } = require('../utils/generate.token');
 
-const login = async ({ email, password }) => {
+const login = async (email, password) => {
   const userExist = await User.findOne({ where: { email } });
   if (!userExist) return ({ status: 409, message: 'User already registered' });
   const { password: userPassword } = userExist;
