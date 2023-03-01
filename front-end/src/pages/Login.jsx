@@ -1,4 +1,6 @@
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import GenericButton from '../components/GenericButton';
 import GenericInput from '../components/GenericInput';
 import {
@@ -9,43 +11,61 @@ import {
 import { formContext } from '../context/FormProvider';
 
 function Login() {
+  const navidateTo = useNavigate();
+  const { inputsValue: {
+    email, pass,
+  } } = useContext(formContext);
+
   const onSubmit = (event) => {
     event.preventDefault();
   };
 
-  const { inputsValue: {
-    email, pass,
-  } } = useContext(formContext);
+  const postEndPointLogin = async () => {
+    try {
+      const request = await axios.post('http://localhost:3001/login', {
+        email: email.value, password: pass.value,
+      });
+
+      console.log(request.data);
+      navidateTo('/customer/products');
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const redirectToResgister = () => {
+    navidateTo('/register');
+  };
 
   return (
     <form onSubmit={ onSubmit }>
       <GenericInput
         name="Email"
-        keyAcess="email"
+        keyAccess="email"
         type="email"
         validation={ validateEmailInput }
-        data-testid="common_login__input-email"
+        dataTestId="common_login__input-email"
       />
       <GenericInput
         name="Senha"
-        keyAcess="pass"
+        keyAccess="pass"
         type="password"
         validation={ validatePassInput }
-        data-testid="common_login__input-password
-        "
+        dataTestId="common_login__input-password"
       />
 
       <GenericButton
         title="Login"
         isDisabled={ !(email.isValid && pass.isValid) }
-        data-testid="common_login__button-login"
+        onClick={ postEndPointLogin }
+        dataTestId="common_login__button-login"
       />
 
       <GenericButton
-        title="Ainda não tenho conta
-        in"
+        title="Ainda não tenho conta"
         isDisabled={ false }
-        data-testid="common_login__button-register"
+        onClick={ redirectToResgister }
+        dataTestId="common_login__button-register"
       />
 
     </form>
