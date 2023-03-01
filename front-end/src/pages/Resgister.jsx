@@ -15,24 +15,28 @@ function Resgister() {
     <form onSubmit={ onSubmit }>
       <GenericInput
         name="Nome"
-        keyAcess="name"
+        keyAccess="name"
         type="text"
         validation={ validateNameInput }
+        data-testid="common_register__input-name"
       />
       <GenericInput
         name="Email"
-        keyAcess="email"
+        keyAccess="email"
         type="email"
         validation={ validateEmailInput }
+        data-testid="common_register__input-email"
       />
       <GenericInput
         name="Senha"
-        keyAcess="pass"
+        keyAccess="pass"
         type="password"
         validation={ validatePassInput }
+        data-testid="common_register__input-password"
       />
       <GenericButton
         title="Cadastrar"
+        data-testid="common_register__button-register"
       />
     </form>
   );
