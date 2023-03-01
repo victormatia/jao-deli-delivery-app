@@ -7,7 +7,7 @@ function GenericInput({ name, type, validation, keyAccess }) {
 
   const showMessage = () => {
     const { value } = inputsValue[keyAccess];
-    if (value?.length) {
+    if (value.length) {
       return inputsValue[keyAccess].isValid ? 'Campo válido'
         : 'Campo inválido';
     }
