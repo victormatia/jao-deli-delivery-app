@@ -16,7 +16,7 @@ describe('testa a camada services para a rota /register', () => {
 
       const response = await createUser(insertRegisterBody);
 
-      expect(response).to.deep.equal(userMock);
+      expect(response).to.deep.equal({ status: 201, result: userMock });
     });
   });
 });
