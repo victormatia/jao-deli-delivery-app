@@ -9,7 +9,7 @@ const createUser = async ({ name, email, password, role }) => {
 
   const cryptoPassword = md5(password);
 
-  let type = '';
+  let type = role;
 
   if (!role) {
     type = 'customer';
