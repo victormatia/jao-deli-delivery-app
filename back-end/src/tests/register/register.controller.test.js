@@ -26,14 +26,14 @@ describe('testa a camada controllers para a rota /register', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      const a = sinon.stub(registerService, 'createUser').resolves(insertRegisterBody);
+      sinon.stub(registerService, 'createUser').resolves({ status: 201, result: insertRegisterBody });
 
       await registerController.registerUser(req, res);
-      console.log(a);
-      const token = generateToken({ email: req.body.email })
+
+      const token = generateToken({ email: req.body.email, role: req.body.role })
 
       expect(res.status).to.have.be.calledWith(201);
-      expect(res.json).to.have.be.calledWith({ token });
+      expect(res.json).to.have.be.calledWith({ status: 201, token, result: insertRegisterBody });
     });
   });
 });
