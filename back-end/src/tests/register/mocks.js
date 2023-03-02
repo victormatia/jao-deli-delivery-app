@@ -6,13 +6,20 @@ module.exports = {
     name: 'coquinha geladinha',
     email: 'coquinhageladinha@gmail.com',
     password,
-    role: 'consumer',
+    role: 'customer'
   },
 
   userMock: {
     name: 'coquinha geladinha',
     email: 'coquinhageladinha@gmail.com',
     password: md5(password),
-    role: 'consumer'
+    role: 'customer'
+  },
+
+  userAlreadyExists: {
+    name: 'Cliente Zé Birita',
+    email: 'zebirita@email.com',
+    password: '1c37466c159755ce1fa181bd247cb925',
+    role: 'customer'
   }
 };
