@@ -17,7 +17,7 @@ const login = async (email, password) => {
       email: userExist.email,
       role: userExist.role,
       token,
-  }};
+  } };
 };
 
 module.exports = {

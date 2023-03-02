@@ -9,12 +9,14 @@ const createUser = async ({ name, email, password, role }) => {
 
   const cryptoPassword = md5(password);
 
+  let type = '';
+
   if (!role) {
-    role = 'customer';
+    type = 'customer';
   }
 
-  const user = await User.create({ name, email, password: cryptoPassword, role });
-  return { status: 201, result: user};
+  const user = await User.create({ name, email, password: cryptoPassword, role: type });
+  return { status: 201, result: user };
 };
 
 module.exports = { createUser };
