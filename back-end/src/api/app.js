@@ -11,7 +11,7 @@ const app = express();
 app.use(cors);
 app.use(express.json());
 app.use('/login', routeLogin);
-app.use('/user', routeUser)
+app.use('/user', routeUser);
 app.use('/register', routeRegister);
 app.use('/customer/products', routeProduct);
 app.use('/customer/orders', routeSales);

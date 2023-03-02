@@ -5,7 +5,7 @@ const loginController = {
     const { status, result } = await loginService.findUsers();
 
     return res.status(status).json({ status, result });
-  }
+  },
 };
 
 module.exports = loginController;
