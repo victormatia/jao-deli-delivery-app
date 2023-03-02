@@ -8,8 +8,8 @@ const salesService = {
   create: async (newSale) => {
     const sale = await Sale.create({ ...newSale });
 
-    await Promise.all(newSale.products.map(async (product) => {
-      const saleProduct = await SaleProduct.create({
+    await Promise.all(newSale.cart.map((product) => {
+      const saleProduct = SaleProduct.create({
         saleId: sale.id,
         productId: product.id,
         quantity: product.quantity,
