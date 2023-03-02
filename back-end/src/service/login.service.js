@@ -10,12 +10,14 @@ const login = async (email, password) => {
   const token = generateToken(userExist);
 
   return {
-    id: userExist.id,
-    name: userExist.name,
-    email: userExist.email,
-    role: userExist.role,
-    token,
-  };
+    status: 200,
+    result: {
+      id: userExist.id,
+      name: userExist.name,
+      email: userExist.email,
+      role: userExist.role,
+      token,
+  }};
 };
 
 module.exports = {
