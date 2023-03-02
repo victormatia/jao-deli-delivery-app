@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GenericButton from '../components/GenericButton';
@@ -9,28 +9,23 @@ import {
 } from '../utils/inputsVaidations';
 
 import { formContext } from '../context/FormProvider';
+import ErrorMessage from '../components/ErrorMessage';
 
 function Login() {
   const navidateTo = useNavigate();
-  const { inputsValue: {
-    email, pass,
-  } } = useContext(formContext);
+  const { inputsValue: { email, pass } } = useContext(formContext);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = (event) => {
     event.preventDefault();
   };
 
   const postEndPointLogin = async () => {
-    try {
-      const request = await axios.post('http://localhost:3001/login', {
-        email: email.value, password: pass.value,
-      });
-
-      console.log(request.data);
+    axios.post('http://localhost:3001/login', {
+      email: email.value, password: pass.value,
+    }).then(() => {
       navidateTo('/customer/products');
-    } catch (e) {
-      console.log(e.message);
-    }
+    }).catch(({ response: { data: { message } } }) => setErrorMessage(message));
   };
 
   const redirectToResgister = () => {
@@ -38,37 +33,40 @@ function Login() {
   };
 
   return (
-    <form onSubmit={ onSubmit }>
-      <GenericInput
-        name="Email"
-        keyAccess="email"
-        type="email"
-        validation={ validateEmailInput }
-        dataTestId="common_login__input-email"
+    <section>
+      <form onSubmit={ onSubmit }>
+        <GenericInput
+          name="Email"
+          keyAccess="email"
+          type="email"
+          validation={ validateEmailInput }
+          dataTestId="common_login__input-email"
+        />
+        <GenericInput
+          name="Senha"
+          keyAccess="pass"
+          type="password"
+          validation={ validatePassInput }
+          dataTestId="common_login__input-password"
+        />
+        <GenericButton
+          title="Login"
+          isDisabled={ !(email.isValid && pass.isValid) }
+          onClick={ postEndPointLogin }
+          dataTestId="common_login__button-login"
+        />
+        <GenericButton
+          title="Ainda não tenho conta"
+          isDisabled={ false }
+          onClick={ redirectToResgister }
+          dataTestId="common_login__button-register"
+        />
+      </form>
+      <ErrorMessage
+        message={ errorMessage }
+        dataTestId="common_login__element-invalid-email"
       />
-      <GenericInput
-        name="Senha"
-        keyAccess="pass"
-        type="password"
-        validation={ validatePassInput }
-        dataTestId="common_login__input-password"
-      />
-
-      <GenericButton
-        title="Login"
-        isDisabled={ !(email.isValid && pass.isValid) }
-        onClick={ postEndPointLogin }
-        dataTestId="common_login__button-login"
-      />
-
-      <GenericButton
-        title="Ainda não tenho conta"
-        isDisabled={ false }
-        onClick={ redirectToResgister }
-        dataTestId="common_login__button-register"
-      />
-
-    </form>
+    </section>
   );
 }
 

@@ -4,15 +4,16 @@ const { generateToken } = require('../utils/generate.token');
 const userController = {
   registerUser: async (req, res) => {
       const { name, email, password, role } = req.body;
-        const user = await userService.createUser({ name, email, password, role });
-        const { status, message } = user;
+        const {
+          status, message, result,
+        } = await userService.createUser({ name, email, password, role });
 
-        if (status && message) {
-          return res.status(status).json({ message });
+        if (message) {
+          return res.status(status).json({ status, message });
         }
 
-        const token = generateToken({ email, role: user.role, id: user.id });
-        return res.status(201).json({ token });
+        const token = generateToken({ email, role: result.role, id: result.id });
+        return res.status(201).json({ status, token, result });
     },
 };
 
