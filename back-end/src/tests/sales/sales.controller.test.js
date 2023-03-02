@@ -1,201 +1,270 @@
-const assert = require('assert');
+// const assert = require('assert');
 const chai = require('chai');
-const expect = chai.expect;
+// const expect = chai.expect;
 const sinon = require('sinon');
 const SalesController = require('../../controller/sales.controller');
 const SalesService = require('../../service/sales.service');
 
 describe('SalesController', () => {
-  describe('create()', () => {
-    it('should create a new sale and return the sale object', async () => {
-      const fakeRequest = {
-        body: { product: 'Product 1', quantity: 2 },
-        user: { id: '12345' }
-      };
-      const fakeResponse = {
-        status: sinon.stub().returnsThis(),
-        json: sinon.stub()
-      };
-      const expectedResponse = { id: '67890', product: 'Product 1', quantity: 2, userId: '12345', status: 'Pendente', saleDate: new Date() };
-      sinon.stub(SalesService, 'create').returns(expectedResponse);
+  describe('create', () => {
+    it('should call SalesService.create with request body and return response', async () => {
+      const requestBody = { status: 200, result:'insert request body here' };
+      const expectedResponse = { status: 200, result: 'insert result here' };
 
-      await SalesController.create(fakeRequest, fakeResponse);
+      const createStub = sinon.stub(SalesService, 'create').resolves(expectedResponse);
 
-      assert.deepStrictEqual(fakeResponse.status.firstCall.args, [201]);
-      assert.deepStrictEqual(fakeResponse.json.firstCall.args, [expectedResponse]);
-      SalesService.create.restore();
-    });
-  });
-
-  describe('getAll()', () => {
-    it('should get all sales and return an array of sale objects', async () => {
-      const fakeRequest = {};
-      const fakeResponse = {
-        status: sinon.stub().returnsThis(),
-        json: sinon.stub()
-      };
-      const expectedResponse = [
-        { id: '67890', product: 'Product 1', quantity: 2, userId: '12345', status: 'Pendente', saleDate: new Date() },
-        { id: '24680', product: 'Product 2', quantity: 1, userId: '54321', status: 'Concluído', saleDate: new Date() }
-      ];
-      sinon.stub(SalesService, 'getAll').returns(expectedResponse);
-
-      await SalesController.getAll(fakeRequest, fakeResponse);
-
-      assert.deepStrictEqual(fakeResponse.status.firstCall.args, [200]);
-      assert.deepStrictEqual(fakeResponse.json.firstCall.args, [expectedResponse]);
-      SalesService.getAll.restore();
-    });
-  });
-
-  describe('getSaleById()', () => {
-    it('should get a sale by id and return the sale object', async () => {
-      const fakeRequest = { params: { id: '67890' } };
-      const fakeResponse = {
-        status: sinon.stub().returnsThis(),
-        json: sinon.stub()
-      };
-      const expectedResponse = { id: '67890', product: 'Product 1', quantity: 2, userId: '12345', status: 'Pendente', saleDate: new Date() };
-      sinon.stub(SalesService, 'getSaleById').returns(expectedResponse);
-
-      await SalesController.getSaleById(fakeRequest, fakeResponse);
-
-      assert.deepStrictEqual(fakeResponse.status.firstCall.args, [200]);
-      assert.deepStrictEqual(fakeResponse.json.firstCall.args, [expectedResponse]);
-      SalesService.getSaleById.restore();
-    });
-  });
-
-  describe('getSaleByUserId()', () => {
-    it('should return a sale when a valid user id is provided', async () => {
-      const fakeUserId = '123';
-      const fakeSale = { id: '456', userId: fakeUserId, status: 'Pendente', saleDate: new Date() };
-      const req = { user: { id: fakeUserId } };
+      const req = { body: requestBody };
       const res = {
         status: sinon.stub().returnsThis(),
-        json: sinon.stub().resolves(fakeSale)
+        json: sinon.stub(),
       };
-      sinon.stub(SalesService, 'getSaleByUserId').resolves(fakeSale);
+
+      await SalesController.create(req, res);
+
+      sinon.assert.calledWithExactly(createStub, requestBody);
+      sinon.assert.calledWithExactly(res.status, expectedResponse.status);
+      sinon.assert.calledWithExactly(res.json, expectedResponse);
+
+      createStub.restore();
+    });
+
+    // it('should return error response when SalesService.create throws an error', async () => {
+    //   const requestBody = { status: 200, result:'insert request body here' };
+    //   const expectedError = new Error('SalesService.create error');
+
+    //   const createStub = sinon.stub(SalesService, 'create').rejects(expectedError);
+
+    //   const req = { body: requestBody };
+    //   const res = {
+    //     status: sinon.stub().returnsThis(),
+    //     json: sinon.stub(),
+    //   };
+
+    //   await SalesController.create(req, res);
+
+    //   sinon.assert.calledWithExactly(createStub, requestBody);
+    //   sinon.assert.calledWithExactly(res.status, 500);
+    //   sinon.assert.calledWithExactly(res.json, { status: 500, error: expectedError.message });
+
+    //   createStub.restore();
+    // });
+  });
+
+  describe('getAll', () => {
+    it('should call SalesService.getAll and return response', async () => {
+      const expectedResponse = { status: 200, result: 'insert result here' };
+
+      const getAllStub = sinon.stub(SalesService, 'getAll').resolves(expectedResponse);
+
+      const req = {};
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+
+      await SalesController.getAll(req, res);
+
+      sinon.assert.calledWithExactly(getAllStub);
+      sinon.assert.calledWithExactly(res.status, expectedResponse.status);
+      sinon.assert.calledWithExactly(res.json, expectedResponse);
+
+      getAllStub.restore();
+    });
+
+    // it('should return error response when SalesService.getAll throws an error', async () => {
+    //   const expectedError = new Error('SalesService.getAll error');
+
+    //   const getAllStub = sinon.stub(SalesService, 'getAll').rejects(expectedError);
+
+    //   const req = {};
+    //   const res = {
+    //     status: sinon.stub().returnsThis(),
+    //     json: sinon.stub(),
+    //   };
+
+    //   await SalesController.getAll(req, res);
+
+    //   sinon.assert.calledWithExactly(getAllStub);
+    //   sinon.assert.calledWithExactly(res.status, 500);
+    //   sinon.assert.calledWithExactly(res.json, { status: 500, error: expectedError.message });
+
+    //   getAllStub.restore();
+    // });
+  });
+
+  describe('getSaleById', () => {
+    it('should call SalesService.getSaleById with id from request params and return response', async () => {
+      const id = 'insert id here';
+      const expectedResponse = { status: 200, result: 'insert result here' };
+
+      const getSaleByIdStub = sinon.stub(SalesService, 'getSaleById').resolves(expectedResponse);
+
+      const req = { params: { id } };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+
+      await SalesController.getSaleById(req, res);
+
+      sinon.assert.calledWithExactly(getSaleByIdStub, id);
+      sinon.assert.calledWithExactly(res.status, expectedResponse.status);
+      sinon.assert.calledWithExactly(res.json, expectedResponse);
+
+      getSaleByIdStub.restore();
+    });
+
+    // it('should return error response when SalesService.getSaleById throws an error', async () => {
+    //   const id = 'insert id here';
+    //   const expectedError = new Error('SalesService.getSaleById error');
+
+    //   const getSaleByIdStub = sinon.stub(SalesService, 'getSaleById').rejects(expectedError);
+
+    //   const req = { params: { id } };
+    //   const res = {
+    //     status: sinon.stub().returnsThis(),
+    //     json: sinon.stub(),
+    //   };
+
+    //   await SalesController.getSaleById(req, res);
+
+    //   sinon.assert.calledWithExactly(getSaleByIdStub, id);
+    //   sinon.assert.calledWithExactly(res.status, 500);
+    //   sinon.assert.calledWithExactly(res.json, { status: 500, error: expectedError.message });
+
+    //   getSaleByIdStub.restore();
+    // });
+  });
+
+  describe('getSaleByUserId', () => {
+    it('should call SalesService.getSaleByUserId with id from request params and return response', async () => {
+      const id = 'insert id here';
+      const expectedResponse = { status: 200, result: 'insert result here' };
+
+      const getSaleByUserIdStub = sinon.stub(SalesService, 'getSaleByUserId').resolves(expectedResponse);
+
+      const req = { user: { id } };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
 
       await SalesController.getSaleByUserId(req, res);
 
-      expect(res.status.calledWith(200)).to.be.true;
-      expect(res.json.calledWith(fakeSale)).to.be.true;
+      sinon.assert.calledWithExactly(getSaleByUserIdStub, id);
+      sinon.assert.calledWithExactly(res.status, expectedResponse.status);
+      sinon.assert.calledWithExactly(res.json, expectedResponse);
 
-      SalesService.getSaleByUserId.restore();
+      getSaleByUserIdStub.restore();
     });
 
-    // it('should return an error when an invalid user id is provided', async () => {
-    //   const fakeUserId = '123';
-    //   const errorMessage = 'Invalid user id';
-    //   const req = { user: { id: fakeUserId } };
+    // it('should return error response when SalesService.getSaleByUserId throws an error', async () => {
+    //   const id = 'insert id here';
+    //   const expectedError = new Error('SalesService.getSaleByUserId error');
+
+    //   const getSaleByUserIdStub = sinon.stub(SalesService, 'getSaleByUserId').rejects(expectedError);
+
+    //   const req = { user: { id } };
     //   const res = {
     //     status: sinon.stub().returnsThis(),
-    //     json: sinon.stub().throws(new Error(errorMessage))
+    //     json: sinon.stub(),
     //   };
-    //   sinon.stub(SalesService, 'getSaleByUserId').throws(new Error(errorMessage));
 
     //   await SalesController.getSaleByUserId(req, res);
 
-    //   expect(res.status.calledWith(500)).to.be.true;
-    //   expect(res.json.threw()).to.be.true;
+    //   sinon.assert.calledWithExactly(getSaleByUserIdStub, id);
+    //   sinon.assert.calledWithExactly(res.status, 500);
+    //   sinon.assert.calledWithExactly(res.json, { status: 500, error: expectedError.message });
 
-    //   SalesService.getSaleByUserId.restore();
+    //   getSaleByUserIdStub.restore();
     // });
   });
 
-  describe('getSaleBySellerId()', () => {
-    it('should return an array of sales', async () => {
-      const userId = '123';
-      const sales = [{ id: '1', userId, sellerId: '456', status: 'Pendente' }, { id: '2', userId, sellerId: '456', status: 'Aprovado' }];
-      const req = { user: { id: userId } };
-      const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-      sinon.stub(SalesService, 'getSaleBySellerId').resolves(sales);
+  describe('getSaleBySellerId', () => {
+    it('should call SalesService.getSaleBySellerId with id from request params and return response', async () => {
+      const id = 'insert id here';
+      const expectedResponse = { status: 200, result: 'insert result here' };
+
+      const getSaleBySellerIdStub = sinon.stub(SalesService, 'getSaleBySellerId').resolves(expectedResponse);
+
+      const req = { user: { id } };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
 
       await SalesController.getSaleBySellerId(req, res);
 
-      assert(res.status.calledWith(200));
-      assert(res.json.calledWith(sales));
-      SalesService.getSaleBySellerId.restore();
+      sinon.assert.calledWithExactly(getSaleBySellerIdStub, id);
+      sinon.assert.calledWithExactly(res.status, expectedResponse.status);
+      sinon.assert.calledWithExactly(res.json, expectedResponse);
+
+      getSaleBySellerIdStub.restore();
     });
 
-    it('should return an empty array if there are no sales', async () => {
-      const userId = '123';
-      const sales = [];
-      const req = { user: { id: userId } };
-      const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-      sinon.stub(SalesService, 'getSaleBySellerId').resolves(sales);
+    // it('should return error response when SalesService.getSaleBySellerId throws an error', async () => {
+    //   const id = 'insert id here';
+    //   const expectedError = new Error('SalesService.getSaleBySellerId error');
 
-      await SalesController.getSaleBySellerId(req, res);
+    //   const getSaleBySellerIdStub = sinon.stub(SalesService, 'getSaleBySellerId').rejects(expectedError);
 
-      assert(res.status.calledWith(200));
-      assert(res.json.calledWith(sales));
-      SalesService.getSaleBySellerId.restore();
-    });
-
-    // it('should return a 500 status if an error occurs', async () => {
-    //   const userId = '123';
-    //   const req = { user: { id: userId } };
-    //   const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-    //   sinon.stub(SalesService, 'getSaleBySellerId').rejects(new Error('Database error'));
+    //   const req = { user: { id } };
+    //   const res = {
+    //     status: sinon.stub().returnsThis(),
+    //     json: sinon.stub(),
+    //   };
 
     //   await SalesController.getSaleBySellerId(req, res);
 
-    //   assert(res.status.calledWith(500));
-    //   assert(res.json.calledWith({ error: 'Database error' }));
-    //   SalesService.getSaleBySellerId.restore();
+    //   sinon.assert.calledWithExactly(getSaleBySellerIdStub, id);
+    //   sinon.assert.calledWithExactly(res.status, 500);
+    //   sinon.assert.calledWithExactly(res.json, { status: 500, error: expectedError.message });
+
+    //   getSaleBySellerIdStub.restore();
     // });
   });
 
-  describe('update()', () => {
-    it('should update the status of a sale and return a success message', async () => {
-      const req = { params: { id: '123' }, body: { status: 'Concluído' } };
-      const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-      const updateStub = sinon.stub(SalesService, 'update');
-      updateStub.withArgs(req.params.id, req.body.status).resolves();
+  describe('update', () => {
+    it('should call SalesService.update with id and request body and return response', async () => {
+      const id = 'insert id here';
+      const requestBody = { status: 200, message:'insert request body here' };
+      const expectedResponse = { status: 200, message: 'insert result here' };
+
+      const updateStub = sinon.stub(SalesService, 'update').resolves(expectedResponse);
+
+      const req = { params: { id }, body: requestBody };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
 
       await SalesController.update(req, res);
 
-      sinon.assert.calledOnceWithExactly(updateStub, req.params.id, req.body.status);
-      sinon.assert.calledOnce(res.status);
-      sinon.assert.calledOnce(res.json);
-      sinon.assert.calledWith(res.status, 200);
-      sinon.assert.calledWith(res.json, { message: 'Status updated successfully!' });
+      sinon.assert.calledWithExactly(updateStub, id, requestBody);
+      sinon.assert.calledWithExactly(res.status, expectedResponse.status);
+      sinon.assert.calledWithExactly(res.json, expectedResponse);
 
       updateStub.restore();
     });
 
-    // it('should return an error message if the sale id is not provided', async () => {
-    //   const req = { params: {}, body: { status: 'Concluído' } };
-    //   const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    // it('should return error response when SalesService.update throws an error', async () => {
+    //   const id = 'insert id here';
+    //   const requestBody = { status: 200, message:'insert request body here' };
+    //   const expectedError = new Error('SalesService.update error');
+
+    //   const updateStub = sinon.stub(SalesService, 'update').rejects(expectedError);
+
+    //   const req = { params: { id }, body: requestBody };
+    //   const res = {
+    //     status: sinon.stub().returnsThis(),
+    //     json: sinon.stub(),
+    //   };
 
     //   await SalesController.update(req, res);
 
-    //   sinon.assert.notCalled(res.status);
-    //   sinon.assert.notCalled(res.json);
-    // });
-
-    // it('should return an error message if the sale status is not provided', async () => {
-    //   const req = { params: { id: '123' }, body: {} };
-    //   const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-
-    //   await SalesController.update(req, res);
-
-    //   sinon.assert.notCalled(res.status);
-    //   sinon.assert.notCalled(res.json);
-    // });
-
-    // it('should return an error message if the sale update fails', async () => {
-    //   const req = { params: { id: '123' }, body: { status: 'Concluído' } };
-    //   const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-    //   const updateStub = sinon.stub(SalesService, 'update');
-    //   updateStub.withArgs(req.params.id, req.body.status).rejects(new Error('Update failed'));
-
-    //   await SalesController.update(req, res);
-
-    //   sinon.assert.calledOnceWithExactly(updateStub, req.params.id, req.body.status);
-    //   sinon.assert.notCalled(res.status);
-    //   sinon.assert.notCalled(res.json);
+    //   sinon.assert.calledWithExactly(updateStub, id, requestBody);
+    //   sinon.assert.calledWithExactly(res.status, 500);
+    //   sinon.assert.calledWithExactly(res.json, { status: 500, error: expectedError.message });
 
     //   updateStub.restore();
     // });

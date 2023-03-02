@@ -2,40 +2,37 @@ const SalesService = require('../service/sales.service');
 
 const SalesController = {
   create: async (req, res) => {
-    const { body, user: { id } } = req;
-    const newSale = { ...body, userId: id, status: 'Pendente', saleDate: new Date() };
-    const sale = await SalesService.create(newSale);
-    res.status(201).json(sale);
+    const { status, result } = await SalesService.create(req.body);
+    res.status(status).json({ status, result });
   },
 
   getAll: async (_req, res) => {
-    const sales = await SalesService.getAll();
-    res.status(200).json(sales);
+    const { status, result } = await SalesService.getAll();
+    res.status(status).json({ status, result });
   },
 
   getSaleById: async (req, res) => {
     const { id } = req.params;
-    const sale = await SalesService.getSaleById(id);
-    res.status(200).json(sale);
+    const { status, result } = await SalesService.getSaleById(id);
+    res.status(status).json({ status, result });
   },
 
   getSaleByUserId: async (req, res) => {
     const { id } = req.user;
-    const sale = await SalesService.getSaleByUserId(id);
-    res.status(200).json(sale);
+    const { status, result } = await SalesService.getSaleByUserId(id);
+    res.status(status).json({ status, result });
   },
 
   getSaleBySellerId: async (req, res) => {
     const { id } = req.user;
-    const sale = await SalesService.getSaleBySellerId(id);
-    res.status(200).json(sale);
+    const { status, result } = await SalesService.getSaleBySellerId(id);
+    res.status(status).json({ status, result });
   },
 
   update: async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
-    await SalesService.update(id, status);
-    res.status(200).json({ message: 'Status updated successfully!' });
+    const { status, message } = await SalesService.update(id, req.body);
+    res.status(status).json({ status, message });
   },
 };
 
