@@ -11,12 +11,12 @@ const registerController = require('../../controller/register.controller')
 const { insertRegisterBody } = require('./mocks');
 const { generateToken } = require('../../utils/generate.token');
 
-describe('testa a camada controllers para a rota /products e /products/:id', () => {
+describe('testa a camada controllers para a rota /register', () => {
 
   afterEach(sinon.restore);
 
-  describe('testa a função getAllProducts', () => {
-    it('Busca por todos os produtos cadastrados', async function () {
+  describe('testa a função registerUser', () => {
+    it('cadastra um novo usuário no banco de dados', async () => {
 
       const req = {
         body: insertRegisterBody
@@ -26,11 +26,11 @@ describe('testa a camada controllers para a rota /products e /products/:id', () 
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      sinon.stub(registerService, 'createUser').resolves(insertRegisterBody);
+      const a = sinon.stub(registerService, 'createUser').resolves(insertRegisterBody);
 
       await registerController.registerUser(req, res);
-
-      const token = generateToken({ email: req.body.email, role: req.body.role })
+      console.log(a);
+      const token = generateToken({ email: req.body.email })
 
       expect(res.status).to.have.be.calledWith(201);
       expect(res.json).to.have.be.calledWith({ token });
