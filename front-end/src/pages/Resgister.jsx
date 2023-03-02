@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ErrorMessage from '../components/ErrorMessage';
 import GenericButton from '../components/GenericButton';
 import GenericInput from '../components/GenericInput';
 import { formContext } from '../context/FormProvider';
@@ -11,6 +12,7 @@ import {
 } from '../utils/inputsVaidations';
 
 function Resgister() {
+  const [errorMessage, setErrorMessage] = useState('');
   const navidateTo = useNavigate();
   const { inputsValue: {
     name, email, pass,
@@ -20,14 +22,10 @@ function Resgister() {
     event.preventDefault();
   };
 
-  const onClick = async () => {
-    try {
-      const request = await axios.post('http://localhost:3001/register', {
-        name: name.value, email: email.value, password: pass.value,
-      });
-
-      console.log(request.data);
-
+  const postEndPointRegister = async () => {
+    axios.post('http://localhost:3001/register', {
+      name: name.value, email: email.value, password: pass.value,
+    }).then(() => {
       setInputsValue({
         name: { value: '', isValid: false },
         email: { value: '', isValid: false },
@@ -35,12 +33,11 @@ function Resgister() {
       });
 
       navidateTo('/customer/products');
-    } catch (e) {
-      console.log(e.message);
-    }
+    }).catch(({ response: { data: { message } } }) => setErrorMessage(message));
   };
 
   useEffect(() => {
+    // OBS.: Os inputs de login e registro usam o mesmo estado, seria interessante refatorar?
     setInputsValue({
       name: { value: '', isValid: false },
       email: { value: '', isValid: false },
@@ -49,35 +46,41 @@ function Resgister() {
   }, []);
 
   return (
-    <form onSubmit={ onSubmit }>
-      <GenericInput
-        name="Nome"
-        keyAccess="name"
-        type="text"
-        validation={ validateNameInput }
-        dataTestId="common_register__input-name"
+    <section>
+      <form onSubmit={ onSubmit }>
+        <GenericInput
+          name="Nome"
+          keyAccess="name"
+          type="text"
+          validation={ validateNameInput }
+          dataTestId="common_register__input-name"
+        />
+        <GenericInput
+          name="Email"
+          keyAccess="email"
+          type="email"
+          validation={ validateEmailInput }
+          dataTestId="common_register__input-email"
+        />
+        <GenericInput
+          name="Senha"
+          keyAccess="pass"
+          type="password"
+          validation={ validatePassInput }
+          dataTestId="common_register__input-password"
+        />
+        <GenericButton
+          title="Cadastrar"
+          isDisabled={ !(name.isValid && email.isValid && pass.isValid) }
+          onClick={ postEndPointRegister }
+          dataTestId="common_register__button-register"
+        />
+      </form>
+      <ErrorMessage
+        message={ errorMessage }
+        dataTestId="common_register__element-invalid_register"
       />
-      <GenericInput
-        name="Email"
-        keyAccess="email"
-        type="email"
-        validation={ validateEmailInput }
-        dataTestId="common_register__input-email"
-      />
-      <GenericInput
-        name="Senha"
-        keyAccess="pass"
-        type="password"
-        validation={ validatePassInput }
-        dataTestId="common_register__input-password"
-      />
-      <GenericButton
-        title="Cadastrar"
-        isDisabled={ !(name.isValid && email.isValid && pass.isValid) }
-        onClick={ onClick }
-        dataTestId="common_register__button-register"
-      />
-    </form>
+    </section>
   );
 }
 
