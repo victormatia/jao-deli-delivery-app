@@ -1,7 +1,6 @@
 const assert = require('assert');
 const sinon = require('sinon');
-// const { expect } = require('chai');
-const { Sale, Product, User } = require('../../database/models');
+const { Sale } = require('../../database/models');
 const salesService = require('../../service/sales.service');
 const salesProductService = require('../../service/sales.products.service');
 
