@@ -5,7 +5,7 @@ const salesProductsService = {
     const bulkArr = products.map(({ productId, quantity }) => ({ saleId, productId, quantity }));
 
     await SaleProduct.bulkCreate(bulkArr);
-  }
+  },
 };
 
 module.exports = salesProductsService;

@@ -1,8 +1,9 @@
 const { Product, Sale, User } = require('../database/models');
-const salesProductService = require('../service/sales.products.service');
+const salesProductService = require('./sales.products.service');
 
 const salesService = {
-  create: async ({ seller, totalPrice, deliveryAddress, deliveryNumber, user: { id }, products }) => {
+  create: async ({ seller, totalPrice, deliveryAddress,
+    deliveryNumber, user: { id }, products }) => {
       const sale = await Sale.create({
         userId: id,
         sellerId: seller,
