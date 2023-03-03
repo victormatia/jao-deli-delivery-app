@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 
 const { User } = require('../../database/models');
-const { insertRegisterBody, userMock, userAlreadyExists } = require('./mocks')
+const { insertRegisterBody, userMock, userAlreadyExists, insertRegisterWithoutRole } = require('./mocks')
 const { createUser } = require('../../service/register.service');
 
 describe('testa a camada services para a rota /register', () => {
@@ -26,6 +26,15 @@ describe('testa a camada services para a rota /register', () => {
       const response = await createUser(userAlreadyExists);
 
       expect(response).to.deep.equal({ status: 409, message: 'User already registered' });
+    });
+
+    it('caso a role não seja informada, role = "costumer"', async () => {
+
+      sinon.stub(User, 'create').resolves(userMock);
+
+      const response = await createUser(insertRegisterWithoutRole);
+
+      expect(response).to.deep.equal({ status: 201, result: userMock })
     });
   });
 });
