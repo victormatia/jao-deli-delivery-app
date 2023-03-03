@@ -1,6 +1,3 @@
-// const assert = require('assert');
-const chai = require('chai');
-// const expect = chai.expect;
 const sinon = require('sinon');
 const SalesController = require('../../controller/sales.controller');
 const SalesService = require('../../service/sales.service');
