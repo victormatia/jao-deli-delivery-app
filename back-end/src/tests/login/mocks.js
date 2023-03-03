@@ -9,6 +9,8 @@ module.exports = {
 
   validEmail: 'fulana@deliveryapp.com',
   validPassword: 'fulana@123',
+  invalidEmail: 'batatinha@gmail.com',
+  invalidPassword: 'batata',
 
   userServiceMock: {
     status: 200,
