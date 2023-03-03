@@ -2,12 +2,12 @@ const { Product, Sale, User } = require('../database/models');
 const salesProductService = require('../service/sales.products.service');
 
 const salesService = {
-  create: async ({ seller, totalPrice, deliveryAdress, deliveryNumber, user: { id }, products }) => {
+  create: async ({ seller, totalPrice, deliveryAddress, deliveryNumber, user: { id }, products }) => {
       const sale = await Sale.create({
         userId: id,
         sellerId: seller,
         totalPrice,
-        deliveryAdress,
+        deliveryAddress,
         deliveryNumber,
         status: 'Pendente',
         saleDate: new Date().toISOString(),
@@ -23,16 +23,18 @@ const salesService = {
   },
 
   getSaleById: async (id) => {
-    const sale = await Sale.findByPk(id, {
+    const sale = await Sale.findOne({
+      where: { id },
       include: [
         {
           model: User,
-          as: 'sellers',
-          attributes: { exclude: ['password', 'id', 'email', 'role'] },
+          as: 'seller',
+          attributes: { exclude: ['password', 'role'] },
         },
         {
           model: Product,
-          as: 'sale',
+          as: 'product',
+          attributes: { exclude: ['urlImage'] },
         },
       ],
     });
@@ -42,14 +44,13 @@ const salesService = {
   getSaleByUserId: async (id) => {
     const sale = await Sale.findAll({
       where: { userId: id },
-      attributes: {
-        exclude: [
-          'userId',
-          'sellerId',
-          'deliveryAddress',
-          'deliveryNumber',
-        ],
-      }, 
+      include: [
+        {
+          model: Product,
+          as: 'product',
+          attributes: { exclude: ['urlImage'] },
+        },
+      ],
     });
     return { status: 200, result: sale };
   },
@@ -57,12 +58,13 @@ const salesService = {
   getSaleBySellerId: async (id) => {
     const sale = await Sale.findAll({
       where: { sellerId: id },
-      attributes: {
-        exclude: [
-          'userId',
-          'sellerId',
-        ],
-      },
+      include: [
+        {
+          model: Product,
+          as: 'product',
+          attributes: { exclude: ['urlImage'] },
+        },
+      ],
     });
     return { status: 200, result: sale };
   },
