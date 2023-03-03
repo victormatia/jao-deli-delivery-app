@@ -2,13 +2,13 @@ import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { formContext } from '../context/FormProvider';
 
-function GenericInput({ name, type, validation, keyAcess }) {
+function GenericInput({ name, type, validation, keyAccess, dataTestId }) {
   const { inputsValue, setInputsValue } = useContext(formContext);
 
   const showMessage = () => {
-    const { value } = inputsValue[keyAcess];
-    if (value?.length) {
-      return inputsValue[keyAcess].isValid ? 'Campo válido'
+    const { value } = inputsValue[keyAccess];
+    if (value.length) {
+      return inputsValue[keyAccess].isValid ? 'Campo válido'
         : 'Campo inválido';
     }
   };
@@ -17,8 +17,8 @@ function GenericInput({ name, type, validation, keyAcess }) {
     setInputsValue((prevState) => (
       {
         ...prevState,
-        [keyAcess]: {
-          ...prevState[keyAcess], value,
+        [keyAccess]: {
+          ...prevState[keyAccess], value,
         },
       }
     ));
@@ -30,11 +30,12 @@ function GenericInput({ name, type, validation, keyAcess }) {
         { name }
         <input
           type={ type }
-          value={ inputsValue[keyAcess].value }
+          value={ inputsValue[keyAccess].value }
           onChange={ ({ target }) => {
             validation(target.value, setInputsValue);
             onInputChange(target.value);
           } }
+          data-testid={ dataTestId }
         />
       </label>
       <span>{ showMessage() }</span>

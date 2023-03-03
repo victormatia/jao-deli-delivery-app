@@ -3,8 +3,11 @@ const loginService = require('../service/login.service');
 const loginController = {
     login: async (req, res) => {
       const { email, password } = req.body;
-      const validatedUser = await loginService.login(email, password);
-      return res.status(200).json(validatedUser);
+      const { status, result, message } = await loginService.login(email, password);
+
+      if (message) return res.status(status).json({ status, message });
+
+      return res.status(status).json({ status, result });
   },
 };
 

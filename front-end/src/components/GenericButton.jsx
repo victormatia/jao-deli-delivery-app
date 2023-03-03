@@ -1,19 +1,12 @@
 import PropTypes from 'prop-types';
 
-function GenericButton({ title, isDisabled }) {
-  const onclick = () => {
-    setInputsValue({
-      name: { value: '', isValid: false },
-      email: { value: '', isValid: false },
-      pass: { value: '', isValid: false },
-    });
-  };
-
+function GenericButton({ title, isDisabled, onClick, dataTestId }) {
   return (
     <button
       disabled={ isDisabled }
       type="submit"
-      onClick={ onclick }
+      onClick={ onClick }
+      data-testid={ dataTestId }
     >
       { title }
     </button>
@@ -22,6 +15,8 @@ function GenericButton({ title, isDisabled }) {
 
 GenericButton.propTypes = {
   title: PropTypes.string,
+  isDisabled: PropTypes.bool,
+  onClick: PropTypes.func,
 }.isRequired;
 
 export default GenericButton;
