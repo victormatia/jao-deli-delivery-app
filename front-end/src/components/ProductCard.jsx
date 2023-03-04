@@ -3,7 +3,6 @@ import { useState } from 'react';
 import GenericButton from './GenericButton';
 
 function ProductCard({ price, title, url, dataTestIds }) {
-  console.log(dataTestIds.quantity);
   const [count, setCount] = useState(0);
   const formatPrice = () => {
     const arrPrice = price.split('.');
