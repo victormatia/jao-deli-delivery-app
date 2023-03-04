@@ -16,7 +16,7 @@ function Resgister() {
   const navidateTo = useNavigate();
   const { inputsValue: {
     name, email, pass,
-  }, setInputsValue } = useContext(formContext);
+  }, setInputsValue, setUser } = useContext(formContext);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -25,7 +25,9 @@ function Resgister() {
   const postEndPointRegister = async () => {
     axios.post('http://localhost:3001/register', {
       name: name.value, email: email.value, password: pass.value,
-    }).then(() => {
+    }).then(({ data }) => {
+      setUser({ ...data.result, token: data.token });
+
       setInputsValue({
         name: { value: '', isValid: false },
         email: { value: '', isValid: false },
@@ -43,6 +45,7 @@ function Resgister() {
       email: { value: '', isValid: false },
       pass: { value: '', isValid: false },
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
