@@ -35,6 +35,7 @@ function ProductCard({ price, title, url, dataTestIds }) {
       />
       <input
         value={ count }
+        onChange={ ({ target }) => setCount(target.value) }
         data-testid={ dataTestIds.quantity }
       />
       <GenericButton
