@@ -16,6 +16,6 @@ describe('model Product', () => {
   });
 
   describe('possui todas as propriedades', () => {
-    ['id', 'name', 'price', 'url_image'].forEach(checkPropertyExists(product));
+    ['id', 'name', 'price', 'urlImage'].forEach(checkPropertyExists(product));
   });
 });

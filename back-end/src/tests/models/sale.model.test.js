@@ -16,6 +16,6 @@ describe('model Sale', () => {
   });
 
   describe('possui todas as propriedades', () => {
-    ['id', 'user_id', 'seller_id', 'total_price', 'delivery_adress', 'delivery_number', 'sale_date', 'status'].forEach(checkPropertyExists(sale));
+    ['id', 'userId', 'sellerId', 'totalPrice', 'deliveryAddress', 'deliveryNumber', 'saleDate', 'status'].forEach(checkPropertyExists(sale));
   });
 });
