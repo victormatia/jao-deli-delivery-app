@@ -1,78 +1,78 @@
-const { sales_products: SaleProduct,
-  Product,
-  Sale,
-  User,
-} = require('../database/models');
+const { Product, Sale, User } = require('../database/models');
+const salesProductService = require('./sales.products.service');
 
 const salesService = {
-  create: async (newSale) => {
-    const sale = await Sale.create({ ...newSale });
-
-    await Promise.all(newSale.cart.map((product) => {
-      const saleProduct = SaleProduct.create({
-        saleId: sale.id,
-        productId: product.id,
-        quantity: product.quantity,
+  create: async ({ seller, totalPrice, deliveryAddress,
+    deliveryNumber, user: { id }, products }) => {
+      const sale = await Sale.create({
+        userId: id,
+        sellerId: seller,
+        totalPrice,
+        deliveryAddress,
+        deliveryNumber,
+        status: 'Pendente',
+        saleDate: new Date().toISOString(),
       });
-      return saleProduct;
-    }));
+    await salesProductService.create({ products, saleId: sale.id });
 
-    return sale;
+    return { status: 201, result: sale };
   },
 
   getAll: async () => {
     const sales = await Sale.findAll();
-    return sales;
+    return { status: 200, result: sales };
   },
 
   getSaleById: async (id) => {
-    const sale = await Sale.findByPk(id, {
+    const sale = await Sale.findOne({
+      where: { id },
       include: [
         {
           model: User,
-          as: 'sellers',
-          attributes: { exclude: ['password', 'id', 'email', 'role'] },
+          as: 'seller',
+          attributes: { exclude: ['password', 'role'] },
         },
         {
           model: Product,
-          as: 'sale',
+          as: 'product',
+          attributes: { exclude: ['urlImage'] },
         },
       ],
     });
-    return sale;
+    return { status: 200, result: sale };
   },
 
   getSaleByUserId: async (id) => {
     const sale = await Sale.findAll({
       where: { userId: id },
-      attributes: {
-        exclude: [
-          'userId',
-          'sellerId',
-          'deliveryAddress',
-          'deliveryNumber',
-        ],
-      }, 
+      include: [
+        {
+          model: Product,
+          as: 'product',
+          attributes: { exclude: ['urlImage'] },
+        },
+      ],
     });
-    return sale;
+    return { status: 200, result: sale };
   },
 
   getSaleBySellerId: async (id) => {
     const sale = await Sale.findAll({
       where: { sellerId: id },
-      attributes: {
-        exclude: [
-          'userId',
-          'sellerId',
-        ],
-      },
+      include: [
+        {
+          model: Product,
+          as: 'product',
+          attributes: { exclude: ['urlImage'] },
+        },
+      ],
     });
-    return sale;
+    return { status: 200, result: sale };
   },
 
   update: async (id, status) => {
-    const sale = await Sale.update({ status }, { where: { id } });
-    return sale;
+    await Sale.update({ status }, { where: { id } });
+    return { status: 200, message: 'Status updated successfully!' };
   },
 };
 
