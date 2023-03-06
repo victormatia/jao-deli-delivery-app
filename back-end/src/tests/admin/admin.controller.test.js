@@ -30,4 +30,42 @@ describe('testa a camada controllers para a rota /admin', () => {
       expect(res.json).to.have.be.calledWith({ status: 200, result: usersMock });
     });
   });
+
+  describe('testa a função deleteUser', () => {
+    it('deleta um usuário pelo id', async () => {
+
+      const req = {
+        params: 2,
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(adminService, 'deleteUser').resolves({ status: 204, result: usersMock[2] });
+
+      await adminController.deleteUser(req, res);
+
+      expect(res.status).to.have.be.calledWith(204);
+      expect(res.json).to.have.be.calledWith({ status: 204, result: usersMock[2] });
+    });
+
+    it('deleta um usuário pelo id', async () => {
+
+      const req = {
+        params: 3,
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(adminService, 'deleteUser').resolves({ status: 404, message: 'User not found' });
+
+      await adminController.deleteUser(req, res);
+
+      expect(res.status).to.have.be.calledWith(404);
+      expect(res.json).to.have.be.calledWith({ status: 404, message: 'User not found' });
+    });
+  });
 });
