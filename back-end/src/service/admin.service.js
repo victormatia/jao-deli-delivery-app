@@ -14,8 +14,15 @@ const deleteUser = async (id) => {
   return { status: 204, result: user };
 };
 
+const findSellers = async () => {
+  const sellers = await User.findAll({ where: { role: 'seller' } });
+
+  return { status: 200, result: sellers }
+};
+
 
 module.exports = {
   findUsers,
   deleteUser,
+  findSellers,
 };
