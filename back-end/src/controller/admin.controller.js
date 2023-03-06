@@ -12,7 +12,7 @@ const adminController = {
 
     if (message) return res.status(status).json({ status, message });
 
-    return res.status(status).json({ status, result })
+    return res.status(status).json({ status, result });
   },
 
   findSellers: async (_req, res) => {
