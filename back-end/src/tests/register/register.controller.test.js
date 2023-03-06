@@ -8,7 +8,7 @@ chai.use(sinonChai);
 const registerService = require('../../service/register.service')
 const registerController = require('../../controller/register.controller')
 
-const { insertRegisterBody, userAlreadyExists } = require('./mocks');
+const { insertRegisterBody, userAlreadyExists, serviceReturnMock, toGenerateToken } = require('./mocks');
 const { generateToken } = require('../../utils/generate.token');
 
 describe('testa a camada controllers para a rota /register', () => {
@@ -26,14 +26,14 @@ describe('testa a camada controllers para a rota /register', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      sinon.stub(registerService, 'createUser').resolves({ status: 201, result: insertRegisterBody });
+      const token = generateToken(toGenerateToken)
+
+      sinon.stub(registerService, 'createUser').resolves({ status: 201, result: { ...serviceReturnMock, token } });
 
       await registerController.registerUser(req, res);
 
-      const token = generateToken({ email: req.body.email, role: req.body.role })
-
       expect(res.status).to.have.be.calledWith(201);
-      expect(res.json).to.have.be.calledWith({ status: 201, token, result: insertRegisterBody });
+      expect(res.json).to.have.be.calledWith({ status: 201, result: { ...serviceReturnMock, token } });
     });
 
     it('retorna um erro caso ja exista um usuário com o nome ou email enviado', async () => {
