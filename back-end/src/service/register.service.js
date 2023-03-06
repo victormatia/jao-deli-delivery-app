@@ -20,9 +20,9 @@ const createUser = async ({ name, email, password, role }) => {
 
   const token = generateToken({ email, role, id: user.id });
 
-  const result = { id: user.id, name, email, role, token }
+  const result = { id: user.id, name, email, role, token };
 
-  return { status: 201, result};
+  return { status: 201, result };
 };
 
 module.exports = { createUser };
