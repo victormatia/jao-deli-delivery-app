@@ -1,6 +1,6 @@
 const express = require('express');
 const routeRegister = require('../routes/register.route');
-const routeUser = require('../routes/user.route');
+const routeAdmin = require('../routes/admin.route');
 const routeProduct = require('../routes/product.route');
 const routeLogin = require('../routes/login.route');
 const routeSales = require('../routes/sales.route');
@@ -11,7 +11,7 @@ const app = express();
 app.use(cors);
 app.use(express.json());
 app.use('/login', routeLogin);
-app.use('/user', routeUser);
+app.use('/admin', routeAdmin);
 app.use('/register', routeRegister);
 app.use('/customer/products', routeProduct);
 app.use('/customer/orders', routeSales);
