@@ -14,6 +14,12 @@ const adminController = {
 
     return res.status(status).json({ status, result })
   },
+
+  findSellers: async (_req, res) => {
+    const { status, result } = await adminService.findSellers();
+
+    return res.status(status).json({ status, result });
+  },
 };
 
 module.exports = adminController;
