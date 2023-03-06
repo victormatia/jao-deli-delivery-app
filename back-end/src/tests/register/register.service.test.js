@@ -2,8 +2,9 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 
 const { User } = require('../../database/models');
-const { insertRegisterBody, userMock, userAlreadyExists, insertRegisterWithoutRole } = require('./mocks')
+const { insertRegisterBody, userMock, userAlreadyExists, insertRegisterWithoutRole, serviceReturnMock, toGenerateToken } = require('./mocks')
 const { createUser } = require('../../service/register.service');
+const { generateToken } = require('../../utils/generate.token');
 
 describe('testa a camada services para a rota /register', () => {
 
@@ -16,11 +17,13 @@ describe('testa a camada services para a rota /register', () => {
 
       const response = await createUser(insertRegisterBody);
 
-      expect(response).to.deep.equal({ status: 201, result: userMock });
+      const token = generateToken(toGenerateToken)
+
+      expect(response).to.deep.equal({ status: 201, result: { ...serviceReturnMock, token } });
     });
 
     it('retorna um erro caso ja exista um usuário com o nome ou email enviado', async () => {
-      
+
       sinon.stub(User, 'create').resolves(userAlreadyExists);
 
       const response = await createUser(userAlreadyExists);
@@ -34,7 +37,9 @@ describe('testa a camada services para a rota /register', () => {
 
       const response = await createUser(insertRegisterWithoutRole);
 
-      expect(response).to.deep.equal({ status: 201, result: userMock })
+      const token = generateToken(toGenerateToken)
+
+      expect(response).to.deep.equal({ status: 201, result: { ...serviceReturnMock, token } })
     });
   });
 });
