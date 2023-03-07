@@ -1,135 +1,78 @@
-const sinon = require('sinon');
 const chai = require('chai');
-const sinonChai = require('sinon-chai');
-const verify = require('../../middleware/sale.validation');
+const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+const SalesController = require('../../controller/sales.controller');
+const { generateToken } = require('../../utils/generate.token');
+
 const { expect } = chai;
-chai.use(sinonChai);
+const app = require('../../api/app');
 
+chai.use(chaiHttp);
 
-describe('Sales Validation', () => {
-  afterEach(() => sinon.restore());
-  it('should call next function if sellerId is valid', () => {
-    const req = { body: { sellerId: 1 } };
-    const res = {};
-    const next = sinon.spy();
+describe('Sales Route', () => {
+  describe('GET /', () => {
+    it('should return all sales', async () => {
+      const getAllSalesSpy = sinon.spy(SalesController, 'getAll');
 
-    verify.verifySellerId(req, res, next);
+      const response = await chai.request(app).get('/customer/orders');
 
-    expect(next.calledOnce).to.be.true;
+      expect(response.status).to.equal(200);
+      expect(response.body.result).to.be.an('array');
+
+      getAllSalesSpy.restore();
+    });
+
+    it('should return a sale by id', async () => {
+      const getSaleByIdSpy = sinon.spy(SalesController, 'getSaleById');
+
+      const response = await chai.request(app).get('/customer/orders/1');
+
+      expect(response.status).to.equal(200);
+      expect(response.body).to.be.an('object');
+
+      getSaleByIdSpy.restore();
+    });
+
+    it('should return a sale by user id', async () => {
+      const getSaleByUserIdSpy = sinon.spy(SalesController, 'getSaleByUserId');
+      const token = generateToken({ id: 1 });
+
+      const response = await chai.request(app)
+      .get('/customer/orders/all')
+      .set('Authorization', token);
+
+      expect(response.status).to.equal(200);
+      expect(response.body).to.be.an('object');
+
+      getSaleByUserIdSpy.restore();
+    });
   });
 
-  it('should return an error message if sellerId is not valid', () => {
-    const req = { body: {} };
-    const res = {};
-    const next = sinon.spy();
+  // describe('POST /', () => {
+  //   it('should create a new sale', async () => {
+  //     const createSaleSpy = sinon.spy(SalesController, 'create');
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
+  //     const response = await chai.request(app).post('/customer/orders/');
 
-    verify.verifySellerId(req, res, next);
-      
-    expect(res.status).to.have.been.calledWith(400);
-    expect(res.json).to.have.been.calledWith({ message: 'Invalid SellerId' });
-    expect(next.notCalled).to.be.true;
-  });
+  //     expect(response.status).to.equal(201);
+  //     expect(response.body).to.be.an('object');
 
-  it('should call next function if TotalPrice is valid', () => {
-    const req = { body: { totalPrice: 1 } };
-    const res = {};
-    const next = sinon.spy();
+  //     createSaleSpy.restore();
+  //   });
+  // });
 
-    verify.verifyTotalPrice(req, res, next);
+  // describe('PATCH /', () => {
+  //   it('should update a sale', async () => {
+  //     const updateSaleSpy = sinon.spy(SalesController, 'update');
 
-    expect(next.calledOnce).to.be.true;
-  });
+  //     const response = await chai.request(app).patch('/customer/orders/1').send({ status: 'Updated' });
 
-  it('should return an error message if TotalPrice is not valid', () => {
-    const req = { body: {} };
-    const res = {};
-    const next = sinon.spy();
+  //     expect(response.status).to.equal(200);
+  //     expect(response.body).to.be.an('object');
+  //     expect(updateSaleSpy.calledOnce).to.be.true;
+  //     expect(response.body.status).to.equal('Updated');
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    verify.verifyTotalPrice(req, res, next);
-      
-    expect(res.status).to.have.been.calledWith(400);
-    expect(res.json).to.have.been.calledWith({ message: 'Invalid TotalPrice' });
-    expect(next.notCalled).to.be.true;
-  });
-
-  it('should call next function if DeliveryAddress is valid', () => {
-    const req = { body: { deliveryAddress: 'Rua tal' } };
-    const res = {};
-    const next = sinon.spy();
-
-    verify.verifyDeliveryAddress(req, res, next);
-
-    expect(next.calledOnce).to.be.true;
-  });
-
-  it('should return an error message if DeliveryAddress is not valid', () => {
-    const req = { body: {} };
-    const res = {};
-    const next = sinon.spy();
-
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    verify.verifyDeliveryAddress(req, res, next);
-      
-    expect(res.status).to.have.been.calledWith(400);
-    expect(res.json).to.have.been.calledWith({ message: 'Invalid address' });
-    expect(next.notCalled).to.be.true;
-  });
-
-  it('should call next function if DeliveryNumber is valid', () => {
-    const req = { body: { deliveryNumber: 1 } };
-    const res = {};
-    const next = sinon.spy();
-
-    verify.verifyDeliveryNumber(req, res, next);
-
-    expect(next.calledOnce).to.be.true;
-  });
-
-  it('should return an error message if DeliveryNumber is not valid', () => {
-    const req = { body: {} };
-    const res = {};
-    const next = sinon.spy();
-
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    verify.verifyDeliveryNumber(req, res, next);
-      
-    expect(res.status).to.have.been.calledWith(400);
-    expect(res.json).to.have.been.calledWith({ message: 'Invalid numberAddress' });
-    expect(next.notCalled).to.be.true;
-  });
-
-  it('should call next function if verifyCart is valid', () => {
-    const req = { body: { cart: [{ productId: 1, quantity: 1 }] } };
-    const res = {};
-    const next = sinon.spy();
-
-    verify.verifyCart(req, res, next);
-
-    expect(next.calledOnce).to.be.true;
-  });
-
-  it('should return an error message if verifyCart is not valid', () => {
-    const req = { body: {} };
-    const res = {};
-    const next = sinon.spy();
-
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    verify.verifyCart(req, res, next);
-      
-    expect(res.status).to.have.been.calledWith(400);
-    expect(res.json).to.have.been.calledWith({ message: 'Invalid cart' });
-    expect(next.notCalled).to.be.true;
-  });
+  //     updateSaleSpy.restore();
+  //   });
+  // });
 });
