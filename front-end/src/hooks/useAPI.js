@@ -8,7 +8,7 @@ const useAPI = (url, token, setter) => {
         axios.get(url, { headers: {
           Authorization: token,
         },
-        }).then(({ data }) => setter(data))
+        }).then(({ data }) => setter(data.result))
           .catch(({ response }) => console.log(response));
       };
 
