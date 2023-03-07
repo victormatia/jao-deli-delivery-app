@@ -18,9 +18,9 @@ const createUser = async ({ name, email, password, role }) => {
 
   const user = await User.create({ name, email, password: cryptoPassword, role: type });
 
-  const token = generateToken({ email, role, id: user.id });
+  const token = generateToken({ email, role: user.role, id: user.id });
 
-  const result = { id: user.id, name, email, role, token };
+  const result = { id: user.id, name, email, role: user.role, token };
 
   return { status: 201, result };
 };
