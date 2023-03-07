@@ -26,7 +26,7 @@ function Resgister() {
     axios.post('http://localhost:3001/register', {
       name: name.value, email: email.value, password: pass.value,
     }).then(({ data }) => {
-      setUser({ ...data.result, token: data.token });
+      setUser(data.result);
 
       setInputsValue({
         name: { value: '', isValid: false },
