@@ -46,7 +46,7 @@ function Products() {
       <h1>Produtos</h1>
       <ul className="products">
         {
-          products.length && products.map(({ id, name, price, url_image: url }) => {
+          products.length && products.map(({ id, name, price, urlImage }) => {
             const dataTestIds = {
               title: `customer_products__element-card-title-${id}`,
               price: `customer_products__element-card-price-${id}`,
@@ -61,7 +61,7 @@ function Products() {
                 <ProductCard
                   title={ name }
                   price={ price }
-                  url={ url }
+                  url={ urlImage }
                   id={ id }
                   updateCart={ updateCart }
                   dataTestIds={ dataTestIds }
