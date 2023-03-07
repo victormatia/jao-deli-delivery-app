@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 
 const { User } = require('../../database/models');
-const { findUsers, deleteUser } = require('../../service/admin.service');
+const { findUsers, deleteUser, findSellers } = require('../../service/admin.service');
 const { usersMock } = require('./mock');
 
 describe('testa a camada services para a rota /admin', () => {
@@ -39,6 +39,21 @@ describe('testa a camada services para a rota /admin', () => {
       const response = await deleteUser(4)
 
       expect(response).to.deep.equal({ status: 404, message: 'User not found' });
+    });
+  });
+
+  afterEach(sinon.restore);
+
+  describe('testa a função findSellers', () => {
+    it('retorna todos os vendedores', async () => {
+
+      const sellers = usersMock.filter(({ role }) => role === 'seller');
+
+      sinon.stub(User, 'findAll').resolves(sellers);
+
+      const response = await findSellers();
+
+      expect(response).to.deep.equal({ status: 200, result: sellers });
     });
   });
 });
