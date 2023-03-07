@@ -2,7 +2,9 @@ const sinon = require('sinon');
 const SalesController = require('../../controller/sales.controller');
 const SalesService = require('../../service/sales.service');
 
+
 describe('SalesController', () => {
+  after(() => sinon.restore());
   describe('create', () => {
     it('should call SalesService.create with request body and return response', async () => {
       const requestBody = { status: 200, result:'insert request body here' };

@@ -18,11 +18,11 @@ const verifyTotalPrice = (req, res, next) => {
   next();
 };
 
-const verifyDeliveryAdress = (req, res, next) => {
+const verifyDeliveryAddress = (req, res, next) => {
   const { deliveryAddress } = req.body;
 
   if (!deliveryAddress && typeof deliveryAddress !== 'string') {
-    return res.status(400).json({ message: 'Invalid adress' });
+    return res.status(400).json({ message: 'Invalid address' });
   }
 
   next();
@@ -32,7 +32,7 @@ const verifyDeliveryNumber = (req, res, next) => {
   const { deliveryNumber } = req.body;
 
   if (!deliveryNumber && typeof deliveryNumber !== 'number') {
-    return res.status(400).json({ message: 'Invalid numberAdress' });
+    return res.status(400).json({ message: 'Invalid numberAddress' });
   }
 
   next();
@@ -51,7 +51,7 @@ const verifyCart = (req, res, next) => {
 module.exports = {
   verifySellerId,
   verifyTotalPrice,
-  verifyDeliveryAdress,
+  verifyDeliveryAddress,
   verifyDeliveryNumber,
   verifyCart,
 };
