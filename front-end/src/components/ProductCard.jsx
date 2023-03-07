@@ -2,11 +2,33 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import GenericButton from './GenericButton';
 
-function ProductCard({ price, title, url, dataTestIds }) {
+function ProductCard({ price, title, url, updateCart, dataTestIds }) {
   const [count, setCount] = useState(0);
   const formatPrice = () => {
     const arrPrice = price.split('.');
     return `${arrPrice[0]},${arrPrice[1]}`;
+  };
+
+  const onChange = ({ target: { value } }) => {
+    const currCount = value < 0 ? 0 : +value;
+    setCount(currCount);
+    updateCart(title, price, currCount);
+  };
+
+  const addItem = () => {
+    setCount((prevCount) => {
+      const currCount = prevCount + 1;
+      updateCart(title, price, currCount);
+      return currCount;
+    });
+  };
+
+  const rmItem = () => {
+    setCount((prevCount) => {
+      const currCount = prevCount === 0 ? 0 : prevCount - 1;
+      updateCart(title, price, currCount);
+      return currCount;
+    });
   };
 
   return (
@@ -30,18 +52,18 @@ function ProductCard({ price, title, url, dataTestIds }) {
       <GenericButton
         title="+"
         isDisabled={ false }
-        onClick={ () => setCount((prevState) => prevState + 1) }
+        onClick={ addItem }
         dataTestId={ dataTestIds.addItem }
       />
       <input
         value={ count }
-        onChange={ ({ target }) => setCount(target.value) }
+        onChange={ (e) => onChange(e) }
         data-testid={ dataTestIds.quantity }
       />
       <GenericButton
         title="-"
         isDisabled={ false }
-        onClick={ () => setCount((prevState) => (prevState === 0 ? 0 : prevState - 1)) }
+        onClick={ rmItem }
         dataTestId={ dataTestIds.rmItem }
       />
     </div>
