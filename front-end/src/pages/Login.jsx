@@ -13,7 +13,7 @@ import ErrorMessage from '../components/ErrorMessage';
 
 function Login() {
   const navidateTo = useNavigate();
-  const { inputsValue: { email, pass } } = useContext(formContext);
+  const { inputsValue: { email, pass }, setUser } = useContext(formContext);
   const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = (event) => {
@@ -23,7 +23,8 @@ function Login() {
   const postEndPointLogin = async () => {
     axios.post('http://localhost:3001/login', {
       email: email.value, password: pass.value,
-    }).then(() => {
+    }).then(({ data }) => {
+      setUser(data.result);
       navidateTo('/customer/products');
     }).catch(({ response: { data: { message } } }) => setErrorMessage(message));
   };
