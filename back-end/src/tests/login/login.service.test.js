@@ -1,5 +1,6 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
+const jwt = require('jsonwebtoken');
 
 const { User } = require('../../database/models');
 const { login } = require('../../service/login.service');
@@ -12,8 +13,6 @@ describe('testa a camada services para a rota /login', () => {
 
   describe('testa a função login', () => {
 
-    const token = generateToken(userMock)
-
     const userExist = {
       status: 200,
       result: {
@@ -21,13 +20,14 @@ describe('testa a camada services para a rota /login', () => {
         name: 'Fulana Pereira',
         email: 'fulana@deliveryapp.com',
         role: 'seller',
-        token: token,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZ1bGFuYUBkZWxpdmVyeWFwcC5jb20iLCJyb2xlIjoic2VsbGVyIiwiaWQiOjIsImlhdCI6MTY3ODMwNTgyNywiZXhwIjoxNjc4MzkyMjI3fQ.odUf1JRn45OZB3TaHbItiyyGWso8UXnIK-NZueOFuEU',
       }
     }
 
     it('encontra o usuário', async () => {
 
       sinon.stub(User, 'findOne').resolves(userMock);
+      sinon.stub(jwt, 'sign').returns('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZ1bGFuYUBkZWxpdmVyeWFwcC5jb20iLCJyb2xlIjoic2VsbGVyIiwiaWQiOjIsImlhdCI6MTY3ODMwNTgyNywiZXhwIjoxNjc4MzkyMjI3fQ.odUf1JRn45OZB3TaHbItiyyGWso8UXnIK-NZueOFuEU');
       const response = await login(validEmail, validPassword);
 
       expect(response).to.deep.equal(userExist);
