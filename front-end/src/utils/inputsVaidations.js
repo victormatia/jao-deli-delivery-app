@@ -1,6 +1,6 @@
 const validateNameInput = (name, setter) => {
   const DOZE = 12;
-  const isValid = name.length > DOZE;
+  const isValid = name.length >= DOZE;
   setter((prevState) => (
     { ...prevState, name: { ...prevState.name, isValid } }));
 };
