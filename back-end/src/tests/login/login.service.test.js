@@ -33,6 +33,14 @@ describe('testa a camada services para a rota /login', () => {
       expect(response).to.deep.equal(userExist);
     });
 
+    it('retorna um erro caso o usuário não exista', async () => {
+        
+      sinon.stub(User, 'findOne').resolves(null);
+      const response = await login(validEmail, validPassword);
+  
+      expect(response).to.deep.equal({ status: 404, message: 'User not found' });
+    });
+
     it('retorna um erro caso a senha esteja incorreta', async () => {
 
       sinon.stub(User, 'findOne').resolves({ status: 401, message: 'Invalid password' });
