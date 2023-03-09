@@ -1,32 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import CartButton from '../components/CartButton';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
-import useAPI from '../hooks/useAPI';
-import useLocalStorage from '../hooks/useLocalStorage';
+import { productsContext } from '../context/ProductsProvider';
 
 function Products() {
-  // criar context para products/fluxo do cliente
-  const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
-  const [amount, setAmount] = useState(0);
-  const { token } = useLocalStorage('user');
-  useAPI('http://localhost:3001/customer/products', token, setProducts);
+  const { products, cart, setCart, amount } = useContext(productsContext);
 
-  useEffect(() => {
-    const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart')) || [];
-    if (cartFromLocalStorage.length) setCart(cartFromLocalStorage);
-  }, []);
-
-  useEffect(() => {
-    const currAmount = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
-
-    setAmount(currAmount);
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
-  const updateCart = (title, price, quantity) => {
+  const updateCart = (id, title, price, quantity) => {
     const doesProductAlreayExists = cart.find((product) => product.title === title);
     const cartNoThisProduct = cart.filter((product) => product.title !== title);
 
@@ -36,7 +17,7 @@ function Products() {
       doesProductAlreayExists.quantity = quantity;
       setCart([...cartNoThisProduct, doesProductAlreayExists]);
     } else {
-      setCart((prevCart) => [...prevCart, { title, price, quantity }]);
+      setCart((prevCart) => [...prevCart, { id, title, price, quantity }]);
     }
   };
 
