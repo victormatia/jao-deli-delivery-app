@@ -1,16 +1,12 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import formatPrice from '../utils/formatPrice';
 
 function CartButton({ amount }) {
   const navidateTo = useNavigate();
 
   const redirectToCheckOut = () => {
     navidateTo('/customer/checkout');
-  };
-
-  const formatPrice = () => {
-    const arrPrice = amount.toFixed(2).split('.');
-    return `${arrPrice[0]},${arrPrice[1]}`;
   };
 
   return (
@@ -24,7 +20,7 @@ function CartButton({ amount }) {
       <span
         data-testid="customer_products__checkout-bottom-value"
       >
-        {amount !== 0 ? formatPrice() : 0}
+        { formatPrice(amount) }
       </span>
     </button>
   );
