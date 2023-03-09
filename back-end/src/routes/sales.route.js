@@ -4,14 +4,14 @@ const { tokenAuthorization } = require('../middleware/JwtAuthentication');
 const { 
   verifySellerId,
   verifyTotalPrice,
-  verifyDeliveryAdress,
+  verifyDeliveryAddress,
   verifyDeliveryNumber,
   verifyCart,
 } = require('../middleware/sale.validation');
 
 const route = Router();
 
-route.post('/', tokenAuthorization, verifySellerId, verifyTotalPrice, verifyDeliveryAdress,
+route.post('/', tokenAuthorization, verifySellerId, verifyTotalPrice, verifyDeliveryAddress,
   verifyDeliveryNumber, verifyCart, SalesController.create);
 route.get('/', SalesController.getAll);
 route.get('/:id', SalesController.getSaleById);

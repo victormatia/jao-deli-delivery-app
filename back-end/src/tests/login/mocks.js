@@ -19,7 +19,7 @@ module.exports = {
       name: 'Fulana Pereira',
       email: 'fulana@deliveryapp.com',
       role: 'seller',
-      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZ1bGFuYUBkZWxpdmVyeWFwcC5jb20iLCJyb2xlIjoic2VsbGVyIiwiaWQiOjIsImlhdCI6MTY3Nzc5NDY4MywiZXhwIjoxNjc3ODgxMDgzfQ.8Q9R-mBakLybBbtNkGpnP1TDdjUWOK9iw-8AQAkNjlc'
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZ1bGFuYUBkZWxpdmVyeWFwcC5jb20iLCJyb2xlIjoic2VsbGVyIiwiaWQiOjIsImlhdCI6MTY3ODMwNTgyNywiZXhwIjoxNjc4MzkyMjI3fQ.odUf1JRn45OZB3TaHbItiyyGWso8UXnIK-NZueOFuEU'
     }
   }
 };
