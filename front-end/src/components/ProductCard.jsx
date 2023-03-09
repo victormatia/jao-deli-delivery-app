@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import GenericButton from './GenericButton';
 
-function ProductCard({ price, title, url, updateCart, dataTestIds }) {
+function ProductCard({ id, price, title, url, updateCart, dataTestIds }) {
   const [count, setCount] = useState(0);
   const formatPrice = () => {
     const arrPrice = price.split('.');
@@ -12,13 +12,13 @@ function ProductCard({ price, title, url, updateCart, dataTestIds }) {
   const onChange = ({ target: { value } }) => {
     const currCount = value < 0 ? 0 : +value;
     setCount(currCount);
-    updateCart(title, price, currCount);
+    updateCart(id, title, price, currCount);
   };
 
   const addItem = () => {
     setCount((prevCount) => {
       const currCount = prevCount + 1;
-      updateCart(title, price, currCount);
+      updateCart(id, title, price, currCount);
       return currCount;
     });
   };
@@ -26,7 +26,7 @@ function ProductCard({ price, title, url, updateCart, dataTestIds }) {
   const rmItem = () => {
     setCount((prevCount) => {
       const currCount = prevCount === 0 ? 0 : prevCount - 1;
-      updateCart(title, price, currCount);
+      updateCart(id, title, price, currCount);
       return currCount;
     });
   };
