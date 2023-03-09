@@ -39,6 +39,7 @@ function Admin() {
         pass: { value: '', isValid: false },
       });
       setRoleValue('seller');
+      setErrorMessage('');
     }).catch(({ response: { data: { message } } }) => setErrorMessage(message));
   };
 

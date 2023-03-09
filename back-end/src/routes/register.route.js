@@ -6,6 +6,13 @@ const { AdminTokenAuthorization } = require('../middleware/registerAdmin.JwtAuth
 
 const route = Router();
 
-route.post('/', AdminTokenAuthorization, verifyName, verifyEmail, verifyPassword, userController.registerUser);
+route.post(
+  '/',
+  AdminTokenAuthorization,
+  verifyName,
+  verifyEmail,
+  verifyPassword,
+  userController.registerUser,
+  );
 
 module.exports = route;
