@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const useLocalStorage = (key, value) => {
-  const [user, setUser] = useState(null);
+  const [result, setResult] = useState(null);
   useEffect(() => {
     const asyncCallBack = async () => {
       if (value) {
@@ -11,7 +11,7 @@ const useLocalStorage = (key, value) => {
           localStorage.setItem(key, JSON.stringify(value));
         }
       } else {
-        setUser(await JSON.parse(localStorage.getItem(key)));
+        setResult(await JSON.parse(localStorage.getItem(key)));
       }
     };
 
@@ -19,7 +19,7 @@ const useLocalStorage = (key, value) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  return user || `Value saved in local storage in key: ${key}`;
+  return result || [];
 };
 
 export default useLocalStorage;
