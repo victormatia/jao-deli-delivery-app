@@ -10,13 +10,17 @@ function ProductsProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [amount, setAmount] = useState(0);
+  const [sellers, setSellers] = useState([]);
   const { token } = useLocalStorage('user');
 
   useAPI('http://localhost:3001/customer/products', token, setProducts);
+  useAPI('http://localhost:3001/admin/seller', token, setSellers);
 
   useEffect(() => {
     const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart')) || [];
+    const sellersFromLocalStorage = JSON.parse(localStorage.getItem('sellers')) || [];
     if (cartFromLocalStorage.length) setCart(cartFromLocalStorage);
+    if (sellersFromLocalStorage.length) setSellers(sellersFromLocalStorage);
   }, []);
 
   useEffect(() => {
@@ -27,13 +31,18 @@ function ProductsProvider({ children }) {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  useEffect(() => {
+    localStorage.setItem('sellers', JSON.stringify(sellers));
+  }, [sellers]);
+
   const state = useMemo(() => ({
     products,
     setProducts,
     cart,
     setCart,
     amount,
-  }), [products, cart, amount]);
+    sellers,
+  }), [products, cart, amount, sellers]);
 
   return (
     <productsContext.Provider value={ state }>
