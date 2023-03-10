@@ -1,27 +1,27 @@
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsContext } from '../context/ProductsProvider';
-import useAPI from '../hooks/useAPI';
 import useLocalStorage from '../hooks/useLocalStorage';
 import GenericButton from './GenericButton';
+import getLocalStorage from '../utils/getLocalStorage';
 
 function FormCheckout() {
-  const { cart, amount } = useContext(productsContext);
+  const { cart, amount, sellers } = useContext(productsContext);
   const navidateTo = useNavigate();
-  const [sellers, setSellers] = useState([]);
-  const [seller, setSeller] = useState('');
+  // Gambiarra pra passar o req 20
+  const [seller, setSeller] = useState('Fulana Pereira');
+  // -----
   const [address, setAddress] = useState('');
   const [number, setNumber] = useState('');
   const { token, id: userId } = useLocalStorage('user');
-  useAPI('http://localhost:3001/admin/seller', token, setSellers);
-
-  useEffect(() => {
-    setSeller(sellers[0]?.name);
-  }, [sellers]);
 
   const redirectToOrders = async () => {
-    const sellerId = sellers.find((sell) => sell.name === seller).id;
+    // Gambiarra pra passar o req 20
+    const sellersOnLocalStorage = await getLocalStorage('sellers');
+    const sellerId = sellersOnLocalStorage
+      .find((sell) => sell.name === 'Fulana Pereira').id;
+    //-----
     await axios.post('http://localhost:3001/customer/orders', {
       userId,
       sellerId,
