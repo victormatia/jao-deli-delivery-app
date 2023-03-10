@@ -4,27 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { productsContext } from '../context/ProductsProvider';
 import useLocalStorage from '../hooks/useLocalStorage';
 import GenericButton from './GenericButton';
-import getLocalStorage from '../utils/getLocalStorage';
+// import getLocalStorage from '../utils/getLocalStorage';
 
 function FormCheckout() {
   const { cart, amount, sellers } = useContext(productsContext);
   const navidateTo = useNavigate();
-  // Gambiarra pra passar o req 20
-  const [seller, setSeller] = useState('Fulana Pereira');
-  // -----
+  const [seller, setSeller] = useState(1);
   const [address, setAddress] = useState('');
   const [number, setNumber] = useState('');
   const { token, id: userId } = useLocalStorage('user');
 
   const redirectToOrders = async () => {
-    // Gambiarra pra passar o req 20
-    const sellersOnLocalStorage = await getLocalStorage('sellers');
-    const sellerId = sellersOnLocalStorage
-      .find((sell) => sell.name === 'Fulana Pereira').id;
-    //-----
     await axios.post('http://localhost:3001/customer/orders', {
       userId,
-      sellerId,
+      sellerId: seller,
       totalPrice: amount,
       deliveryAddress: address,
       deliveryNumber: number,
@@ -49,8 +42,8 @@ function FormCheckout() {
           data-testid="customer_checkout__select-seller"
         >
           {
-            sellers.map(({ name }) => (
-              <option key={ name } value={ name }>{ name }</option>))
+            sellers.map(({ name, id }) => (
+              <option key={ name } value={ id }>{ name }</option>))
           }
         </select>
       </label>
