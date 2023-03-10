@@ -38,10 +38,10 @@ module.exports = {
         allowNull: false,
         field: 'total_price',
       },
-      delivery_address: {
+      deliveryAddress: {
         type: Sequelize.STRING,
         allowNull: false,
-        // field: 'delivery_address',
+        field: 'delivery_address',
       },
       deliveryNumber: {
         type: Sequelize.STRING,

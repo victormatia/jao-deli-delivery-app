@@ -10,6 +10,7 @@ import {
   validateNameInput,
   validatePassInput,
 } from '../utils/inputsVaidations';
+import NavBar from '../components/NavBar';
 
 function Admin() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -54,6 +55,7 @@ function Admin() {
 
   return (
     <section>
+      <NavBar />
       <form onSubmit={ onSubmit }>
         <GenericInput
           name="Nome"

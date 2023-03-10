@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { createContext, useMemo, useState } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
 
 const formContext = createContext();
 
@@ -11,8 +10,6 @@ function FormProvider({ children }) {
     email: { value: '', isValid: false },
     pass: { value: '', isValid: false },
   });
-
-  useLocalStorage('user', user);
 
   const state = useMemo(() => ({
     inputsValue,

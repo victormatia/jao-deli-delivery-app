@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useMemo, useState } from 'react';
-import useAPI from '../hooks/useAPI';
-import useLocalStorage from '../hooks/useLocalStorage';
+import fetchAPI from '../utils/fetchAPI';
+import getLocalStorage from '../utils/getLocalStorage';
 // import formatPrice from '../utils/formatPrice';
 
 const productsContext = createContext();
@@ -11,12 +11,21 @@ function ProductsProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [amount, setAmount] = useState(0);
   const [sellers, setSellers] = useState([]);
-  const { token } = useLocalStorage('user');
 
-  useAPI('http://localhost:3001/customer/products', token, setProducts);
-  useAPI('http://localhost:3001/admin/seller', token, setSellers);
+  const saveOnStateAndLocalStorage = (value) => {
+    localStorage.setItem('sellers', JSON.stringify(value));
+    setSellers(value);
+  };
 
   useEffect(() => {
+    const asyncCalback = async () => {
+      const { token } = await getLocalStorage('user');
+      await fetchAPI('http://localhost:3001/customer/products', token, setProducts);
+      await fetchAPI('http://localhost:3001/admin/seller', token, saveOnStateAndLocalStorage);
+    };
+
+    asyncCalback();
+
     const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart')) || [];
     const sellersFromLocalStorage = JSON.parse(localStorage.getItem('sellers')) || [];
     if (cartFromLocalStorage.length) setCart(cartFromLocalStorage);
@@ -30,10 +39,6 @@ function ProductsProvider({ children }) {
 
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-
-  useEffect(() => {
-    localStorage.setItem('sellers', JSON.stringify(sellers));
-  }, [sellers]);
 
   const state = useMemo(() => ({
     products,
