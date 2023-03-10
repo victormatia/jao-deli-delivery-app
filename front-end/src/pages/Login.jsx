@@ -24,9 +24,13 @@ function Login() {
     axios.post('http://localhost:3001/login', {
       email: email.value, password: pass.value,
     }).then(({ data }) => {
+      localStorage.setItem('user', JSON.stringify(data.result));
       setUser(data.result);
-      if (data.result.role === 'administrator') navidateTo('/admin/manage');
-      else navidateTo('/customer/products');
+      switch (data.result.role) {
+      case 'administrator': navidateTo('/admin/manage'); break;
+      case 'seller': break;
+      default: navidateTo('/customer/products'); break;
+      }
     }).catch(({ response: { data: { message } } }) => setErrorMessage(message));
   };
 
