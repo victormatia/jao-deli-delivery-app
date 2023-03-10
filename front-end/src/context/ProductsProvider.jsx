@@ -12,11 +12,16 @@ function ProductsProvider({ children }) {
   const [amount, setAmount] = useState(0);
   const [sellers, setSellers] = useState([]);
 
+  const saveOnStateAndLocalStorage = (value) => {
+    localStorage.setItem('sellers', JSON.stringify(value));
+    setSellers(value);
+  };
+
   useEffect(() => {
     const asyncCalback = async () => {
       const { token } = await getLocalStorage('user');
       await fetchAPI('http://localhost:3001/customer/products', token, setProducts);
-      await fetchAPI('http://localhost:3001/admin/seller', token, setSellers); // gambiarra
+      await fetchAPI('http://localhost:3001/admin/seller', token, saveOnStateAndLocalStorage);
     };
 
     asyncCalback();
@@ -24,7 +29,7 @@ function ProductsProvider({ children }) {
     const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart')) || [];
     const sellersFromLocalStorage = JSON.parse(localStorage.getItem('sellers')) || [];
     if (cartFromLocalStorage.length) setCart(cartFromLocalStorage);
-    if (sellersFromLocalStorage.length) setSellers(sellersFromLocalStorage); // gambiarra
+    if (sellersFromLocalStorage.length) setSellers(sellersFromLocalStorage);
   }, []);
 
   useEffect(() => {
@@ -34,10 +39,6 @@ function ProductsProvider({ children }) {
 
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-
-  useEffect(() => { // gambiarra
-    localStorage.setItem('sellers', JSON.stringify(sellers));
-  }, [sellers]);
 
   const state = useMemo(() => ({
     products,
