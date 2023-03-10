@@ -5,6 +5,7 @@ import Resgister from './pages/Resgister';
 import FormProvider from './context/FormProvider';
 import Login from './pages/Login';
 import Products from './pages/Products';
+import Admin from './pages/Admin';
 import Checkout from './pages/Checkout';
 import ProductsProvider from './context/ProductsProvider';
 
@@ -43,6 +44,14 @@ function App() {
             <ProductsProvider>
               <Checkout />
             </ProductsProvider>
+          }
+        />
+        <Route
+          path="/admin/manage"
+          element={
+            <FormProvider>
+              <Admin />
+            </FormProvider>
           }
         />
       </Routes>

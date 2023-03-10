@@ -25,7 +25,8 @@ function Login() {
       email: email.value, password: pass.value,
     }).then(({ data }) => {
       setUser(data.result);
-      navidateTo('/customer/products');
+      if (data.result.role === 'administrator') navidateTo('/admin/manage');
+      else navidateTo('/customer/products');
     }).catch(({ response: { data: { message } } }) => setErrorMessage(message));
   };
 
