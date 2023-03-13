@@ -7,7 +7,9 @@ import Login from './pages/Login';
 import Products from './pages/Products';
 import Admin from './pages/Admin';
 import Checkout from './pages/Checkout';
+import SellerOrders from './pages/SellerOrders';
 import ProductsProvider from './context/ProductsProvider';
+import CustomerOrders from './pages/CustomerOrders';
 
 function App() {
   return (
@@ -52,6 +54,18 @@ function App() {
             <FormProvider>
               <Admin />
             </FormProvider>
+          }
+        />
+        <Route
+          path="/seller/orders"
+          element={
+            <SellerOrders />
+          }
+        />
+        <Route
+          path="/customer/orders/:id"
+          element={
+            <CustomerOrders />
           }
         />
       </Routes>

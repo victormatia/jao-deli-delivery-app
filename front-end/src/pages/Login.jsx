@@ -28,7 +28,7 @@ function Login() {
       setUser(data.result);
       switch (data.result.role) {
       case 'administrator': navidateTo('/admin/manage'); break;
-      case 'seller': break;
+      case 'seller': navidateTo('/seller/orders'); break;
       default: navidateTo('/customer/products'); break;
       }
     }).catch(({ response: { data: { message } } }) => setErrorMessage(message));
