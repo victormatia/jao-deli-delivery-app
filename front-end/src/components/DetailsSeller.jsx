@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { productsContext } from '../context/ProductsProvider';
+import formatPrice from '../utils/formatPrice';
 
 function DetailsSeller({ sale }) {
+  const { amount } = useContext(productsContext);
   return (
     <section>
       <p
@@ -28,7 +31,7 @@ function DetailsSeller({ sale }) {
       <p
         data-testid={ `seller_orders__element-order-date-${sale.id}` }
       >
-        { sale.subtotal }
+        { formatPrice(amount) }
       </p>
     </section>
   );

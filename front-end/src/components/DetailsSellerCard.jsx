@@ -4,10 +4,8 @@ import PropTypes from 'prop-types';
 
 function DetailsSellerCard({ sale }) {
   // const navigateTo = useNavigate();
-  const dataTestId1 = `seller_order_details__element-order-details-label-order-id-
-  ${sale.id}`;
-  const dataTestId2 = `seller_order_details__element-order-details-label-order-date-
-  ${sale.id}`;
+  const dataTestId1 = 'seller_order_details__element-order-details-label-order-id';
+  const dataTestId2 = 'seller_order_details__element-order-details-label-order-date';
   const dataTestId3 = 'seller_order_details__element-order-details-label-delivery-status';
   return (
     <section>
@@ -27,14 +25,11 @@ function DetailsSellerCard({ sale }) {
       </h4>
       <button
         type="button"
+        data-testid="seller_order_details__button-preparing-check"
         onClick={ () => {} }
+        disabled={ sale.status !== 'Pendente' }
       >
-        <button
-          type="button"
-          data-testid="seller_order_details__button-preparing-check"
-        >
-          PREPARAR PEDIDO
-        </button>
+        PREPARAR PEDIDO
       </button>
       <button
         type="button"
