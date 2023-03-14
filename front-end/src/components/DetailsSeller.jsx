@@ -36,7 +36,7 @@ function DetailsSeller({ sale }) {
 }
 
 DetailsSeller.propTypes = {
-  sale: PropTypes.objectOf.isRequired,
-};
+  sale: PropTypes.shape,
+}.isRequired;
 
 export default DetailsSeller;
