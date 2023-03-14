@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GenericButton from '../components/GenericButton';
@@ -37,6 +37,20 @@ function Login() {
   const redirectToResgister = () => {
     navidateTo('/register');
   };
+
+  useEffect(() => {
+    const users = localStorage.getItem('user');
+    const newObj = JSON.parse(users);
+    if (!newObj) {
+      navidateTo('/login');
+    } else if (newObj.role === 'customer') {
+      navidateTo('/customer/products');
+    } else if (newObj.role === 'administrator') {
+      navidateTo('/admin/manage');
+    } else if (newObj.role === 'seller') {
+      navidateTo('/seller/orders');
+    }
+  }, []);
 
   return (
     <section>
