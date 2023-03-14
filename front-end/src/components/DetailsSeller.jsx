@@ -8,7 +8,6 @@ function DetailsSeller({ sale }) {
         data-testid={ `seller_order_details__element-order-table-item-number-
         ${sale.id}` }
       >
-
         { sale.id }
       </p>
       <h4
@@ -36,7 +35,7 @@ function DetailsSeller({ sale }) {
 }
 
 DetailsSeller.propTypes = {
-  sale: PropTypes.objectOf.isRequired,
-};
+  sale: PropTypes.shape,
+}.isRequired;
 
 export default DetailsSeller;

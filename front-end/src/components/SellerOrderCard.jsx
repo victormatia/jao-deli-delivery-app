@@ -43,7 +43,7 @@ function SellerOrderCard({ sale }) {
 }
 
 SellerOrderCard.propTypes = {
-  sale: PropTypes.objectOf.isRequired,
-};
+  sale: PropTypes.shape,
+}.isRequired;
 
 export default SellerOrderCard;

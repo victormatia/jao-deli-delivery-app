@@ -8,8 +8,7 @@ function DetailsSellerCard({ sale }) {
   ${sale.id}`;
   const dataTestId2 = `seller_order_details__element-order-details-label-order-date-
   ${sale.id}`;
-  const dataTestId3 = `seller_orders_details__element-order-details-label-delivery-status-
-  ${sale.id}`;
+  const dataTestId3 = 'seller_order_details__element-order-details-label-delivery-status';
   return (
     <section>
       <p data-testid={ dataTestId1 }>
@@ -30,28 +29,26 @@ function DetailsSellerCard({ sale }) {
         type="button"
         onClick={ () => {} }
       >
-        <p
+        <button
+          type="button"
           data-testid="seller_order_details__button-preparing-check"
         >
           PREPARAR PEDIDO
-        </p>
+        </button>
       </button>
       <button
         type="button"
         onClick={ () => {} }
+        data-testid="seller_order_details__button-dispatch-check"
       >
-        <p
-          data-testid="seller_order_details__button-dispatch-check"
-        >
-          SAIU PARA ENTREGA
-        </p>
+        SAIU PARA ENTREGA
       </button>
     </section>
   );
 }
 
 DetailsSellerCard.propTypes = {
-  sale: PropTypes.objectOf.isRequired,
-};
+  sale: PropTypes.shape(),
+}.isRequired;
 
 export default DetailsSellerCard;
