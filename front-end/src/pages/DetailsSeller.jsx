@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import NavBarDetails from '../components/NavBarDetails';
 import DetailsSellerCard from '../components/DetailsSellerCard';
 import DetailSeller from '../components/DetailsSeller';
@@ -6,12 +7,13 @@ import fetchAPI from '../utils/fetchAPI';
 import getLocalStorage from '../utils/getLocalStorage';
 
 function DetailsSeller() {
-  const [sales, setSales] = useState([]);
+  const [sale, setSale] = useState(undefined);
+  const { id } = useParams();
 
   useEffect(() => {
     const asyncCalback = async () => {
       const { token } = await getLocalStorage('user');
-      await fetchAPI('http://localhost:3001/seller/orders', token, setSales);
+      await fetchAPI(`http://localhost:3001/seller/orders/${id}`, token, setSale);
     };
 
     asyncCalback();
@@ -23,16 +25,10 @@ function DetailsSeller() {
         <NavBarDetails />
         <section>
           <h1>Detalhe do Pedido</h1>
-          {(sales.length > 0) && (
-            sales.map(
-              (sale) => (<DetailsSellerCard key={ sale.id } sale={ sale } />),
-            ))}
+          { sale && (<DetailsSellerCard sale={ sale } />)}
         </section>
         <section>
-          {(sales.length > 0) && (
-            sales.map(
-              (sale) => (<DetailSeller key={ sale.id } sale={ sale } />),
-            ))}
+          { sale && (<DetailSeller sale={ sale } />)}
         </section>
       </div>
     </main>
