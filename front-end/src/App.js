@@ -10,6 +10,7 @@ import Checkout from './pages/Checkout';
 import SellerOrders from './pages/SellerOrders';
 import ProductsProvider from './context/ProductsProvider';
 import CustomerOrders from './pages/CustomerOrders';
+import DetailsSeller from './pages/DetailsSeller';
 
 function App() {
   return (
@@ -71,6 +72,14 @@ function App() {
           path="/customer/orders/:id"
           element={
             <CustomerOrders />
+          }
+        />
+        <Route
+          path="/seller/orders/:id"
+          element={
+            <ProductsProvider>
+              <DetailsSeller />
+            </ProductsProvider>
           }
         />
       </Routes>
