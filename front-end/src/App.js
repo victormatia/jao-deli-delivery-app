@@ -62,6 +62,11 @@ function App() {
             <SellerOrders />
           }
         />
+
+        <Route
+          path="/customer/orders"
+          element={ <CustomerOrders /> }
+        />
         <Route
           path="/customer/orders/:id"
           element={
