@@ -5,6 +5,7 @@ import DetailsSellerCard from '../components/DetailsSellerCard';
 import DetailSeller from '../components/DetailsSeller';
 import fetchAPI from '../utils/fetchAPI';
 import getLocalStorage from '../utils/getLocalStorage';
+import AmountDetails from '../components/AmountDetails';
 
 function DetailsSeller() {
   const [sale, setSale] = useState(undefined);
@@ -29,6 +30,7 @@ function DetailsSeller() {
         </section>
         <section>
           { sale && (<DetailSeller sale={ sale } />)}
+          { sale && (<AmountDetails sale={ sale } />)}
         </section>
       </div>
     </main>

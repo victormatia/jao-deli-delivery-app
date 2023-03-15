@@ -1,39 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { productsContext } from '../context/ProductsProvider';
-import formatPrice from '../utils/formatPrice';
+import SaleProductDetails from './SaleProductDetails';
+
+const headers = ['Item',
+  'Descrição', 'Quantidade', 'Valor Unitário', 'Sub-total'];
 
 function DetailsSeller({ sale }) {
-  const { amount } = useContext(productsContext);
+  console.log(sale);
   return (
-    <section>
-      <p
-        data-testid={ `seller_order_details__element-order-table-item-number-
-        ${sale.id}` }
-      >
-        { sale.id }
-      </p>
-      <h4
-        data-testid={ `seller_order_details__element-order-table-name-${sale.id}` }
-      >
-        { sale.title }
-      </h4>
-      <p
-        data-testid={ `seller_orders__element-order-date-${sale.id}` }
-      >
-        { sale.quantity }
-      </p>
-      <p
-        data-testid={ `seller_orders__element-card-price-${sale.id}` }
-      >
-        { sale.totalPrice.replace('.', ',') }
-      </p>
-      <p
-        data-testid={ `seller_orders__element-order-date-${sale.id}` }
-      >
-        { formatPrice(amount) }
-      </p>
-    </section>
+    <table>
+      <thead>
+        <tr>
+          {
+            headers.map((header) => (<th key={ header }>{ header }</th>))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          sale.product.map((item, i) => {
+            const dataTestIds = {
+              index: `seller_order_details__element-order-table-item-number-
+            ${i}`,
+              title: `seller_order_details__element-order-table-name-${i}`,
+              quantity: `seller_orders__element-order-date-${i}`,
+              price: `seller_orders__element-card-price-${i}`,
+              subtotal: `seller_orders__element-order-date-${i}`,
+            };
+
+            return (<SaleProductDetails
+              key={ i }
+              index={ i + 1 }
+              title={ item.name }
+              quantity={ item.SaleProduct.quantity }
+              price={ item.price }
+              subtotal={ item.price * item.SaleProduct.quantity }
+              dataTestIds={ dataTestIds }
+            />);
+          })
+        }
+      </tbody>
+    </table>
   );
 }
 

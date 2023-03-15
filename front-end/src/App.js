@@ -72,7 +72,9 @@ function App() {
         <Route
           path="/seller/orders/:id"
           element={
-            <DetailsSeller />
+            <ProductsProvider>
+              <DetailsSeller />
+            </ProductsProvider>
           }
         />
       </Routes>

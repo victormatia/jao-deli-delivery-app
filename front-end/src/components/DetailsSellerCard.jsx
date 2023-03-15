@@ -1,6 +1,7 @@
 import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 function DetailsSellerCard({ sale }) {
   // const navigateTo = useNavigate();
@@ -16,7 +17,7 @@ function DetailsSellerCard({ sale }) {
       <p
         data-testid={ dataTestId2 }
       >
-        { sale.saleDate }
+        { moment(sale.saleDate).format('DD/MM/YYYY') }
       </p>
       <h4
         data-testid={ dataTestId3 }
@@ -27,14 +28,15 @@ function DetailsSellerCard({ sale }) {
         type="button"
         data-testid="seller_order_details__button-preparing-check"
         onClick={ () => {} }
-        disabled={ sale.status !== 'Pendente' }
+        isDisabled={ sale.status !== 'Pendente' }
       >
         PREPARAR PEDIDO
       </button>
       <button
         type="button"
-        onClick={ () => {} }
         data-testid="seller_order_details__button-dispatch-check"
+        onClick={ () => {} }
+        disabled
       >
         SAIU PARA ENTREGA
       </button>
