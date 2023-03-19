@@ -70,7 +70,7 @@ const salesService = {
     return { status: 200, result: sale };
   },
 
-  update: async (id, status) => {
+update: async (id, { status }) => {
     await Sale.update({ status }, { where: { id } });
     return { status: 200, message: 'Status updated successfully!' };
   },
