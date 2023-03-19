@@ -26,7 +26,7 @@ function DetailsSeller() {
         <NavBarDetails />
         <section>
           <h1>Detalhe do Pedido</h1>
-          { sale && (<DetailsSellerCard sale={ sale } />)}
+          { sale && (<DetailsSellerCard sale={ sale } updateSale={ setSale } />)}
         </section>
         <section>
           { sale && (<DetailSeller sale={ sale } />)}
