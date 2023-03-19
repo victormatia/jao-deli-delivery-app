@@ -12,20 +12,16 @@ function NavBarDetails() {
     navigateTo('/login');
   };
 
-  // const redirectToOrders = () => {
-  //   navigateTo('/customer/orders');
-  // };
-
-  // const redirectToProducts = () => {
-  //   navigateTo('/customer/products');
-  // };
+  const redirectToOrders = () => {
+    navigateTo('/seller/orders');
+  };
 
   return (
     <nav>
       <GenericButton
         title="PEDIDOS"
         isDisabled={ false }
-        onClick={ () => {} }
+        onClick={ redirectToOrders }
         dataTestId="customer_products__element-navbar-link-orders"
       />
       <UserCard
