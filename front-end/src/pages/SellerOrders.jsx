@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import NavBar from '../components/NavBar';
+import NavBarDetails from '../components/NavBarDetails';
 import SellerOrderCard from '../components/SellerOrderCard';
 import fetchAPI from '../utils/fetchAPI';
 import getLocalStorage from '../utils/getLocalStorage';
@@ -19,7 +19,7 @@ function SellerOrders() {
   return (
     <main>
       <div>
-        <NavBar />
+        <NavBarDetails />
         <section>
           {(sales.length > 0) && (
             sales.map(
